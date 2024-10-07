@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -43,9 +44,12 @@ fun AddEditProductScreen(
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
+            .padding(16.dp)
     ) {
+        val spaceBetweenFields = 12.dp
+
         OutlinedTextField(
             value = nameState,
             onValueChange = {
@@ -56,7 +60,7 @@ fun AddEditProductScreen(
             }
         )
 
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(spaceBetweenFields))
 
         OutlinedTextField(
             value = priceState,
@@ -75,7 +79,7 @@ fun AddEditProductScreen(
             visualTransformation = DecimalInputVisualTransformation(decimalFormatter = DecimalFormatter())
         )
 
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(spaceBetweenFields))
 
         ColorPicker(
             "Farbe",
@@ -86,7 +90,7 @@ fun AddEditProductScreen(
             modifier = Modifier.width(400.dp)
         )
 
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(spaceBetweenFields))
 
         Button(onClick = {
             viewModel.onEvent(AddEditProductEvent.SaveProduct)

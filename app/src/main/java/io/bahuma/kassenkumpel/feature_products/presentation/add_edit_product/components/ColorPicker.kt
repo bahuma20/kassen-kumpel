@@ -88,12 +88,12 @@ fun ColorPicker(
         Box(
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .offset(16.dp, -8.dp)
+                .offset(16.dp, (-8).dp)
                 .background(MaterialTheme.colorScheme.background)
                 .padding(4.dp, 0.dp)
         ) {
             Text(
-                "Farbe",
+                label,
                 color = MaterialTheme.colorScheme.outline,
                 fontSize = 12.sp,
                 lineHeight = 12.sp,

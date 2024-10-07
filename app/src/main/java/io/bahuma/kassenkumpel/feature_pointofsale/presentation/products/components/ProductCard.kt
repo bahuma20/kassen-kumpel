@@ -79,7 +79,8 @@ fun ProductCard(
                     text = name,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    color = Color.Black
                 )
 
                 Spacer(modifier.weight(1f))
