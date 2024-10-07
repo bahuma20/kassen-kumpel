@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -22,19 +21,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import io.bahuma.kassenkumpel.feature_pointofsale.presentation.cash_payment.CashPaymentEvent
-import io.bahuma.kassenkumpel.feature_pointofsale.presentation.cash_payment.CashPaymentViewModel
+import io.bahuma.kassenkumpel.feature_pointofsale.presentation.cash_payment.CashPaymentState
 import io.bahuma.kassenkumpel.feature_pointofsale.presentation.cash_payment.components.numberinput.NumberInput
 import io.bahuma.kassenkumpel.utils.formatPrice
+import kotlinx.coroutines.launch
 
 @Composable
 fun CashPayment(
@@ -44,11 +46,28 @@ fun CashPayment(
     onComplete: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val viewModel =
-        hiltViewModel<CashPaymentViewModel, CashPaymentViewModel.CashPaymentViewModelFactory> { factory ->
-            factory.create(totalAmount, countLineItems)
+    var state by remember { mutableStateOf(CashPaymentState()) }
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(totalAmount, countLineItems) {
+        coroutineScope.launch {
+            state = state.copy(
+                totalAmount = totalAmount,
+                countLineItems = countLineItems,
+                changeAmount = 0.0
+            )
         }
-    val state by viewModel.state;
+    }
+
+    LaunchedEffect(state.payedAmount, state.totalAmount) {
+        coroutineScope.launch {
+            if (state.payedAmount > state.totalAmount) {
+                state = state.copy(changeAmount = state.payedAmount - state.totalAmount)
+            } else {
+                state = state.copy(changeAmount = 0.0)
+            }
+        }
+    }
 
     CashPayment(
         totalAmount = state.totalAmount,
@@ -56,11 +75,14 @@ fun CashPayment(
         payedAmount = state.payedAmount,
         changeAmount = state.changeAmount,
         onClose = onClose,
-        onPayedAmountChanged = { viewModel.onEvent(CashPaymentEvent.PayedAmountChangedEvent(it)) },
+        onPayedAmountChanged = { newPayedAmount ->
+            state = state.copy(payedAmount = newPayedAmount)
+        },
         onComplete = onComplete,
         modifier = modifier
     )
 }
+
 
 @Composable
 fun CashPayment(
@@ -161,7 +183,7 @@ fun CashPayment(
                 ) {
                     Text("Passend")
                 }
-                
+
                 Spacer(Modifier.width(16.dp))
 
                 Button(
