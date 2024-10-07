@@ -20,17 +20,23 @@ Dieses Projekt wird aktiv entwickelt und befindet sich im Moment in einer frühe
     - [x] Berechnung des Gesamtpreises im Warenkorb
     - [x] Entfernen einzelner Produkte aus dem Warenkorb
     - [x] Entfernen aller Produkte aus dem Warenkorb
+    - [ ] Bearbeiten der Anzahl der Produkte im Warenkorb
     - [ ] Hinzufügen von Individuellen Beträgen (ohne Produkt)
         - [ ] Kommentar für individuelle Beträge
         - [ ] Negative individuelle Beträge
-- [ ] Barzahlung mit Rückgeldberechnung
+- [x] Barzahlung mit Rückgeldberechnung
 - [ ] Kartenzahlung mit SumUp Geräten
     - [ ] Rückbuchung von Kartenzahlungen
 - [ ] Anschreiben (Gesamtzahlung am Ende einer Veranstaltung)
+    - [ ] Anschreibungs-Konten anlegen
+    - [ ] Warenkorb in Anschreibungs-Konto transferieren
+    - [ ] Anschreibungs-Konten bezahlen
+    - [ ] Detailansicht Anschreibungs-Konto nach Transaktion
+    - [ ] Detailansicht Anschreibungs-Konto Gesamt
 - [x] Speichern aller Transaktionen
     - [ ] Export der Transaktionen als CSV
     - [ ] Statistik über gekaufte Produkte
-- [ ] Quittung für Zahlungen (als PDF per E-Mail oder auf dem Gerät gespeichert)
+- [ ] Quittung für Transaktionen (als PDF per E-Mail oder auf dem Gerät gespeichert)
 - [ ] Konfiguration der aktivierten Features (Barzahlung, Kartenzahlung, Anschreiben)
 
 ## Screenshots

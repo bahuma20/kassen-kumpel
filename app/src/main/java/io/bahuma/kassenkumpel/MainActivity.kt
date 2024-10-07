@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Menu
@@ -19,11 +20,15 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -36,6 +41,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import io.bahuma.kassenkumpel.core.controller.ProvideSnackbarController
 import io.bahuma.kassenkumpel.feature_pointofsale.presentation.pointofsale.components.PointOfSalesScreen
 import io.bahuma.kassenkumpel.feature_products.presentation.add_edit_product.components.AddEditProductScreen
 import io.bahuma.kassenkumpel.feature_products.presentation.products.components.ProductsScreen
@@ -58,20 +64,20 @@ class MainActivity : ComponentActivity() {
 
             val drawerState = rememberDrawerState(DrawerValue.Closed)
 
+            val snackbarHostState = remember { SnackbarHostState() }
+
             val scope = rememberCoroutineScope()
 
             KassenKumpelTheme {
                 ModalNavigationDrawer(
-                    drawerState = drawerState,
-                    drawerContent = {
+                    drawerState = drawerState, drawerContent = {
                         ModalDrawerSheet {
                             Text("KassenKumpel 1.0", modifier = Modifier.padding(16.dp))
 
                             HorizontalDivider()
 
                             topLevelRoutes.forEach { topLevelRoute ->
-                                NavigationDrawerItem(
-                                    label = { Text(topLevelRoute.name) },
+                                NavigationDrawerItem(label = { Text(topLevelRoute.name) },
                                     selected = currentDestination?.hierarchy?.any {
                                         it.hasRoute(
                                             topLevelRoute.route::class
@@ -101,68 +107,77 @@ class MainActivity : ComponentActivity() {
                                         scope.launch {
                                             drawerState.close()
                                         }
+                                    })
+                            }
+                        }
+                    }, gesturesEnabled = false
+                ) {
+                    ProvideSnackbarController(snackbarHostState, scope) {
+                        Scaffold(
+                            topBar = {
+                                TopAppBar(
+                                    colors = topAppBarColors(
+                                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                        titleContentColor = MaterialTheme.colorScheme.primary
+                                    ),
+                                    title = {
+                                        Text(text = topLevelRoutes.firstOrNull { topLevelRoute ->
+                                            currentDestination?.hierarchy?.any {
+                                                it.hasRoute(
+                                                    topLevelRoute.route::class
+                                                )
+                                            } == true
+                                        }?.name ?: "KassenKumpel")
+                                    },
+                                    navigationIcon = {
+                                        IconButton(onClick = {
+                                            scope.launch {
+                                                drawerState.apply {
+                                                    if (isClosed) open() else close()
+                                                }
+                                            }
+                                        }) {
+                                            Icon(
+                                                imageVector = Icons.Filled.Menu,
+                                                contentDescription = "Menü"
+                                            )
+                                        }
                                     }
                                 )
-                            }
-                        }
-                    },
-                    gesturesEnabled = false
-                ) {
-                    Scaffold(
-                        topBar = {
-                            TopAppBar(
-                                colors = topAppBarColors(
-                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                    titleContentColor = MaterialTheme.colorScheme.primary
-                                ),
-                                title = {
-                                    Text(text = topLevelRoutes.firstOrNull { topLevelRoute ->
-                                        currentDestination?.hierarchy?.any {
-                                            it.hasRoute(
-                                                topLevelRoute.route::class
-                                            )
-                                        } == true
-                                    }?.name ?: "KassenKumpel")
-                                },
-                                navigationIcon = {
-                                    IconButton(onClick = {
-                                        scope.launch {
-                                            drawerState.apply {
-                                                if (isClosed) open() else close()
-                                            }
-                                        }
-                                    }) {
-                                        Icon(
-                                            imageVector = Icons.Filled.Menu,
-                                            contentDescription = "Menü"
-                                        )
-                                    }
+                            },
+                            snackbarHost = {
+                                SnackbarHost(hostState = snackbarHostState) {
+                                    Snackbar(
+                                        snackbarData = it,
+                                        modifier = Modifier.widthIn(0.dp, 250.dp)
+                                    )
                                 }
-                            )
-                        }
-                    ) { contentPadding ->
-                        NavHost(
-                            navController = navController,
-                            startDestination = PointOfSaleScreen,
-                            modifier = Modifier.padding(contentPadding)
-                        ) {
-                            composable<PointOfSaleScreen> {
-                                PointOfSalesScreen(navController)
                             }
+                        ) { contentPadding ->
+                            NavHost(
+                                navController = navController,
+                                startDestination = PointOfSaleScreen,
+                                modifier = Modifier.padding(contentPadding)
+                            ) {
+                                composable<PointOfSaleScreen> {
+                                    PointOfSalesScreen(navController)
+                                }
 
-                            composable<ProductsScreen> {
-                                ProductsScreen(navController)
-                            }
+                                composable<ProductsScreen> {
+                                    ProductsScreen(navController)
+                                }
 
-                            composable<AddEditProductsScreen> {
-                                AddEditProductScreen(navController)
-                            }
+                                composable<AddEditProductsScreen> {
+                                    AddEditProductScreen(navController)
+                                }
 
-                            composable<TransactionsScreen> {
-                                TransactionsScreen()
+                                composable<TransactionsScreen> {
+                                    TransactionsScreen()
+                                }
                             }
                         }
                     }
+
                 }
             }
         }
@@ -178,7 +193,6 @@ object ProductsScreen
 @Serializable
 data class AddEditProductsScreen(
     val productId: Int?
-
 )
 
 @Serializable

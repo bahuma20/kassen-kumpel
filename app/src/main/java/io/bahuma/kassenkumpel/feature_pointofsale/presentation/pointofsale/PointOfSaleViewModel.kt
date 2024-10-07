@@ -1,10 +1,16 @@
 package io.bahuma.kassenkumpel.feature_pointofsale.presentation.pointofsale
 
 import android.util.Log
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.bahuma.kassenkumpel.core.controller.SnackbarMessage
+import io.bahuma.kassenkumpel.core.controller.UserMessage
 import io.bahuma.kassenkumpel.core.model.Product
 import io.bahuma.kassenkumpel.feature_pointofsale.domain.model.LineItem
 import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.CartUseCases
@@ -24,7 +30,7 @@ import javax.inject.Inject
 class PointOfSaleViewModel @Inject constructor(
     private val cartUseCases: CartUseCases,
     private val productUseCases: ProductUseCases,
-    private val transactionUseCases: TransactionUseCases
+    private val transactionUseCases: TransactionUseCases,
 ) : ViewModel() {
     private val _products = mutableStateListOf<Product>()
     val products: List<Product> = _products
@@ -32,12 +38,21 @@ class PointOfSaleViewModel @Inject constructor(
     private val _lineItems = mutableStateListOf<LineItem>()
     val lineItems: List<LineItem> = _lineItems
 
+    private val _cartTotal = mutableDoubleStateOf(0.0)
+    val cartTotal: State<Double> = _cartTotal
+
+    private val _uiState = mutableStateOf(PointOfSaleState())
+    val uiState: State<PointOfSaleState> = _uiState
+
+
     private var getProductsJob: Job? = null
     private var getLineItemsJob: Job? = null
+    private var getCartTotalJob: Job? = null
 
     init {
         getProducts()
         getLineItems()
+        getCartTotal()
     }
 
     fun onEvent(event: PointOfSaleEvent) {
@@ -78,7 +93,28 @@ class PointOfSaleViewModel @Inject constructor(
                     )
 
                     cartUseCases.clearCart()
+
+                    _uiState.value = uiState.value.copy(
+                        cashPaymentModalOpen = false,
+                        snackbarMessage = SnackbarMessage.from(
+                            userMessage = UserMessage.from("Zahlung erfolgreich"),
+                            withDismissAction = true,
+                            duration = SnackbarDuration.Short
+                        )
+                    )
                 }
+            }
+
+            PointOfSaleEvent.PayCashEvent -> {
+                _uiState.value = uiState.value.copy(cashPaymentModalOpen = true)
+            }
+
+            PointOfSaleEvent.ClosePaymentDialogEvent -> {
+                _uiState.value = uiState.value.copy(cashPaymentModalOpen = false)
+            }
+
+            PointOfSaleEvent.SnackbarCloseEvent -> {
+                _uiState.value = uiState.value.copy(snackbarMessage = null)
             }
         }
     }
@@ -105,4 +141,13 @@ class PointOfSaleViewModel @Inject constructor(
             }
             .launchIn(viewModelScope)
     }
+
+    private fun getCartTotal() {
+        getCartTotalJob?.cancel()
+
+        getCartTotalJob = cartUseCases.getCartTotal()
+            .onEach { total -> _cartTotal.doubleValue = total }
+            .launchIn(viewModelScope)
+    }
+
 }
