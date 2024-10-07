@@ -4,17 +4,21 @@ import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import io.bahuma.kassenkumpel.core.model.Product
+import io.bahuma.kassenkumpel.feature_products.domain.model.Category
 
 @Database(
-    entities = [Product::class],
-    version = 2,
+    entities = [Product::class, Category::class],
+    version = 3,
     autoMigrations = [
-        AutoMigration(from = 1, to = 2)
+        AutoMigration(from = 1, to = 2),
+        AutoMigration(from = 2, to = 3),
     ]
 )
 abstract class ProductDatabase : RoomDatabase() {
 
     abstract val productDao: ProductDao
+
+    abstract val categoryDao: CategoryDao
 
     companion object {
         const val DATABASE_NAME = "products_db"

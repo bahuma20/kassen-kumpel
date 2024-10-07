@@ -43,7 +43,9 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import io.bahuma.kassenkumpel.core.controller.ProvideSnackbarController
 import io.bahuma.kassenkumpel.feature_pointofsale.presentation.pointofsale.components.PointOfSalesScreen
+import io.bahuma.kassenkumpel.feature_products.presentation.add_edit_category.components.AddEditCategoryScreen
 import io.bahuma.kassenkumpel.feature_products.presentation.add_edit_product.components.AddEditProductScreen
+import io.bahuma.kassenkumpel.feature_products.presentation.categories.components.CategoriesScreen
 import io.bahuma.kassenkumpel.feature_products.presentation.products.components.ProductsScreen
 import io.bahuma.kassenkumpel.feature_transactions.presentation.transactions.components.TransactionsScreen
 import io.bahuma.kassenkumpel.ui.theme.KassenKumpelTheme
@@ -58,7 +60,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val navController = rememberNavController();
+            val navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination
 
@@ -171,6 +173,14 @@ class MainActivity : ComponentActivity() {
                                     AddEditProductScreen(navController)
                                 }
 
+                                composable<CategoriesScreen> {
+                                    CategoriesScreen(navController)
+                                }
+
+                                composable<AddEditCategoryScreen> {
+                                    AddEditCategoryScreen(navController)
+                                }
+
                                 composable<TransactionsScreen> {
                                     TransactionsScreen()
                                 }
@@ -196,6 +206,14 @@ data class AddEditProductsScreen(
 )
 
 @Serializable
+object CategoriesScreen
+
+@Serializable
+data class AddEditCategoryScreen(
+    val categoryId: Int?
+)
+
+@Serializable
 object TransactionsScreen
 
 data class TopLevelRoute<T : Any>(val name: String, val route: T, val icon: ImageVector)
@@ -203,5 +221,6 @@ data class TopLevelRoute<T : Any>(val name: String, val route: T, val icon: Imag
 val topLevelRoutes = listOf(
     TopLevelRoute("Kasse", PointOfSaleScreen, Icons.Default.ShoppingCart),
     TopLevelRoute("Produkte", ProductsScreen, Icons.AutoMirrored.Default.List),
+    TopLevelRoute("Kategorien", CategoriesScreen, Icons.AutoMirrored.Default.List),
     TopLevelRoute("Transaktionen", TransactionsScreen, Icons.Default.PlayArrow)
 )

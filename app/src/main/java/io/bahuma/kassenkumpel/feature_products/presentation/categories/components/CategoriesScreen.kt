@@ -1,4 +1,4 @@
-package io.bahuma.kassenkumpel.feature_products.presentation.products.components
+package io.bahuma.kassenkumpel.feature_products.presentation.categories.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -27,29 +28,25 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import io.bahuma.kassenkumpel.AddEditProductsScreen
-import io.bahuma.kassenkumpel.feature_products.presentation.products.ProductsEvent
-import io.bahuma.kassenkumpel.feature_products.presentation.products.ProductsViewModel
+import io.bahuma.kassenkumpel.AddEditCategoryScreen
+import io.bahuma.kassenkumpel.feature_products.presentation.categories.CategoriesEvent
+import io.bahuma.kassenkumpel.feature_products.presentation.categories.CategoriesViewModel
 
 @Composable
-fun ProductsScreen(
+fun CategoriesScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
-    viewModel: ProductsViewModel = hiltViewModel()
+    viewModel: CategoriesViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.value
+    val state by viewModel.state
 
     Scaffold(
-        modifier = modifier,
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    navController.navigate(AddEditProductsScreen(null))
-                }
-            ) {
+            FloatingActionButton(onClick = { navController.navigate(AddEditCategoryScreen(null)) }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
             }
-        }) { innerPadding ->
+        }
+    ) { innerPadding ->
         LazyColumn(
             Modifier
                 .fillMaxHeight()
@@ -58,19 +55,11 @@ fun ProductsScreen(
             contentPadding = PaddingValues(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(state.products) { product ->
-                ProductItem(
-                    product,
-                    onEdit = {
-                        navController.navigate(
-                            AddEditProductsScreen(
-                                productId = product.id
-                            )
-                        )
-                    },
-                    onDelete = {
-                        viewModel.onEvent(ProductsEvent.DeleteProduct(product))
-                    },
+            items(state.categories) { category ->
+                CategoryItem(
+                    category = category,
+                    onEdit = { navController.navigate(AddEditCategoryScreen(category.categoryId)) },
+                    onDelete = { viewModel.onEvent(CategoriesEvent.DeleteCategory(category)) },
                     modifier = Modifier
                         .fillMaxWidth()
                 )
@@ -78,31 +67,31 @@ fun ProductsScreen(
         }
     }
 
-    if (state.productToDelete != null) {
+    if (state.categoryToDelete != null) {
         AlertDialog(
             icon = {
                 Icon(imageVector = Icons.Outlined.Delete, contentDescription = "Delete")
 
             },
             title = {
-                Text(text = "Produkt löschen")
+                Text(text = "Kategorie löschen")
             },
             text = {
                 Text(buildAnnotatedString {
-                    append("Möchtest du das Produkt ")
+                    append("Möchtest du die Kategorie ")
                     withStyle(style = SpanStyle(fontStyle = FontStyle.Italic)) {
-                        append(state.productToDelete.name)
+                        append(state.categoryToDelete!!.name)
                     }
                     append(" wirklich löschen?")
                 })
             },
             onDismissRequest = {
-                viewModel.onEvent(ProductsEvent.DeleteProductCancel)
+                viewModel.onEvent(CategoriesEvent.DeleteCategoryCancel)
             },
             confirmButton = {
                 TextButton(
                     onClick = {
-                        viewModel.onEvent(ProductsEvent.DeleteProductConfirm(state.productToDelete))
+                        viewModel.onEvent(CategoriesEvent.DeleteCategoryConfirm(state.categoryToDelete!!))
                     }
                 ) {
                     Text(text = "Löschen")
@@ -111,7 +100,7 @@ fun ProductsScreen(
             dismissButton = {
                 TextButton(
                     onClick = {
-                        viewModel.onEvent(ProductsEvent.DeleteProductCancel)
+                        viewModel.onEvent(CategoriesEvent.DeleteCategoryCancel)
                     }
                 ) {
                     Text(text = "Abbrechen")
@@ -120,6 +109,4 @@ fun ProductsScreen(
         )
 
     }
-
-
 }

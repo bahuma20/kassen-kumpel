@@ -23,8 +23,8 @@ fun ProductGrid(
     onItemRemoved: (io.bahuma.kassenkumpel.core.model.Product) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val itemCardWidth = 135.dp;
-    val gap = 16.dp;
+    val itemCardWidth = 135.dp
+    val gap = 16.dp
 
     LazyVerticalGrid(
         columns = GridCells.FixedSize(itemCardWidth + gap),
@@ -58,14 +58,15 @@ fun ProductGridPreview() {
             "Leberkässemmel",
             2.5,
             Color.Red.toArgb(),
+            null,
             false,
             1
         ),
-        io.bahuma.kassenkumpel.core.model.Product("Kaffee", 2.5, Color.Blue.toArgb(), false, 2),
-        io.bahuma.kassenkumpel.core.model.Product("Kuchen", 2.5, Color.Blue.toArgb(), false, 3),
-        io.bahuma.kassenkumpel.core.model.Product("Wasser", 2.5, Color.Green.toArgb(), false, 4),
-        io.bahuma.kassenkumpel.core.model.Product("Spezi", 2.5, Color.Green.toArgb(), false, 5),
-        io.bahuma.kassenkumpel.core.model.Product("Bier", 2.5, Color.Green.toArgb(), false, 6),
+        io.bahuma.kassenkumpel.core.model.Product("Kaffee", 2.5, Color.Blue.toArgb(), null,false, 2),
+        io.bahuma.kassenkumpel.core.model.Product("Kuchen", 2.5, Color.Blue.toArgb(), null,false, 3),
+        io.bahuma.kassenkumpel.core.model.Product("Wasser", 2.5, Color.Green.toArgb(), null,false, 4),
+        io.bahuma.kassenkumpel.core.model.Product("Spezi", 2.5, Color.Green.toArgb(), null,false, 5),
+        io.bahuma.kassenkumpel.core.model.Product("Bier", 2.5, Color.Green.toArgb(), null,false, 6),
     )
 
     val productsInCart = hashMapOf(Pair(2, 5), Pair(3, 1), Pair(6, 10))

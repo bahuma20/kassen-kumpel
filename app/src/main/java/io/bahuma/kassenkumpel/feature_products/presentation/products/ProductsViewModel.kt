@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.bahuma.kassenkumpel.feature_products.domain.use_case.ProductUseCases
+import io.bahuma.kassenkumpel.feature_products.domain.use_case.product.ProductUseCases
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

@@ -10,6 +10,7 @@ data class Product(
     val name: String,
     val price: Double,
     val color: Int,
+    @ColumnInfo(defaultValue = "null") val categoryId: Int? = null,
     @ColumnInfo(defaultValue = "false") val deleted: Boolean = false,
     @PrimaryKey val id: Int? = null,
 ) {

@@ -1,4 +1,4 @@
-package io.bahuma.kassenkumpel.feature_products.domain.use_case
+package io.bahuma.kassenkumpel.feature_products.domain.use_case.product
 
 import io.bahuma.kassenkumpel.core.model.InvalidProductException
 import io.bahuma.kassenkumpel.core.model.Product

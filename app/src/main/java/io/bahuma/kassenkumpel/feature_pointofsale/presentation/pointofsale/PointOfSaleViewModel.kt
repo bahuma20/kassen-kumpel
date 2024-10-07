@@ -14,7 +14,7 @@ import io.bahuma.kassenkumpel.core.controller.UserMessage
 import io.bahuma.kassenkumpel.core.model.Product
 import io.bahuma.kassenkumpel.feature_pointofsale.domain.model.LineItem
 import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.CartUseCases
-import io.bahuma.kassenkumpel.feature_products.domain.use_case.ProductUseCases
+import io.bahuma.kassenkumpel.feature_products.domain.use_case.product.ProductUseCases
 import io.bahuma.kassenkumpel.feature_transactions.domain.model.Transaction
 import io.bahuma.kassenkumpel.feature_transactions.domain.model.TransactionLineItem
 import io.bahuma.kassenkumpel.feature_transactions.domain.use_case.TransactionUseCases

@@ -12,15 +12,23 @@ Dieses Projekt wird aktiv entwickelt und befindet sich im Moment in einer frühe
 
 - [x] Verwaltung von Produkten
     - [x] Produkte hinzufügen
+    - [x] Produkte bearbeiten
     - [x] Produkte löschen
     - [ ] Produkte mit Aufpreis (z.B. Pfand)
     - [ ] Produkte mit negativen Preisen (z.B. Pfandrückgabe, Rabatte)
+- [ ] Verwaltung von Kategorien
+    - [x] Kategorien hinzufügen
+    - [x] Kategorien bearbeiten
+    - [x] Kategorien löschen
+    - [ ] Icons von Kategorien auswählen
+    - [ ] Produkte Kategorien zuweisen
 - [ ] Point of Sale
     - [x] Auswahl der Produkte
     - [x] Berechnung des Gesamtpreises im Warenkorb
     - [x] Entfernen einzelner Produkte aus dem Warenkorb
     - [x] Entfernen aller Produkte aus dem Warenkorb
     - [x] Bearbeiten der Anzahl der Produkte im Warenkorb
+    - [ ] Produkte nach Kategorie filtern
     - [ ] Hinzufügen von Individuellen Beträgen (ohne Produkt)
         - [ ] Kommentar für individuelle Beträge
         - [ ] Negative individuelle Beträge

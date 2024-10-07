@@ -13,7 +13,7 @@ import io.bahuma.kassenkumpel.AddEditProductsScreen
 import io.bahuma.kassenkumpel.core.model.InvalidProductException
 import io.bahuma.kassenkumpel.core.model.Product
 import io.bahuma.kassenkumpel.core.model.ProductColor
-import io.bahuma.kassenkumpel.feature_products.domain.use_case.ProductUseCases
+import io.bahuma.kassenkumpel.feature_products.domain.use_case.product.ProductUseCases
 import io.bahuma.kassenkumpel.feature_products.presentation.util.DecimalFormatter
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
