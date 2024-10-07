@@ -51,11 +51,15 @@ Dieses Projekt wird aktiv entwickelt und befindet sich im Moment in einer frühe
 
 ![point-of-sale.jpg](docs/images/point-of-sale.jpg)
 
+![cash-payment.jpg](docs/images/cash-payment.jpg)
+
 ![navigation.jpg](docs/images/navigation.jpg)
 
 ![products.jpg](docs/images/products.jpg)
 
 ![edit-product.jpg](docs/images/edit-product.jpg)
+
+![categories.jpg](docs/images/categories.jpg)
 
 ## Technologie
 
