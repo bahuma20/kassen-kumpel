@@ -67,11 +67,20 @@ fun PointOfSalesScreen(
 
         Cart(
             lineItems = viewModel.lineItems,
-            onRemove = {
+            totalAmount = viewModel.cartTotal.value,
+            onRemoveLineItem = {
                 Log.i("Bahumatest", "remove ${it.productId} x ${it.amount}")
                 viewModel.onEvent(
                     PointOfSaleEvent.RemoveProductCompletelyFromCart(
                         it.productId ?: -1
+                    )
+                )
+            },
+            onChangeLineItemAmount = { lineItem, newAmount ->
+                viewModel.onEvent(
+                    PointOfSaleEvent.ChangeLineItemAmount(
+                        lineItem.productId ?: -1,
+                        newAmount
                     )
                 )
             },

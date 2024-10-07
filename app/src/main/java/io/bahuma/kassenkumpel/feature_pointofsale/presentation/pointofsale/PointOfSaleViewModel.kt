@@ -69,6 +69,10 @@ class PointOfSaleViewModel @Inject constructor(
                 cartUseCases.removeProductCompletelyFromCart(event.productId)
             }
 
+            is PointOfSaleEvent.ChangeLineItemAmount -> {
+                cartUseCases.setProductAmount(event.productId, event.newAmount)
+            }
+
             is PointOfSaleEvent.ClearCartEvent -> {
                 cartUseCases.clearCart()
             }

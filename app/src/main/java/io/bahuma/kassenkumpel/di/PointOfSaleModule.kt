@@ -13,6 +13,7 @@ import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.GetCartTotal
 import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.GetLineItemsInCart
 import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.RemoveProductCompletelyFromCart
 import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.RemoveProductFromCart
+import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.SetProductAmount
 import javax.inject.Singleton
 
 @Module
@@ -33,6 +34,7 @@ object PointOfSaleModule {
         return CartUseCases(
             addProductToCart = AddProductToCart(cartRepository),
             removeProductFromCart = RemoveProductFromCart(cartRepository),
+            setProductAmount = SetProductAmount(cartRepository),
             removeProductCompletelyFromCart = RemoveProductCompletelyFromCart(cartRepository),
             getLineItemsInCart = GetLineItemsInCart(cartRepository),
             getCartTotal = GetCartTotal(cartRepository),

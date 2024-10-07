@@ -48,6 +48,23 @@ class CartRepositoryImpl : CartRepository {
         _lineItemsFlow.value = _lineItems.toList()
     }
 
+    override fun setProductAmount(productId: Int, amount: Int) {
+        val index = findProduct(productId)
+
+        if (index < 0) {
+            return
+        }
+
+        if (amount < 1) {
+            _lineItems.removeAt(index)
+            _lineItemsFlow.value = _lineItems.toList()
+            return
+        }
+
+        _lineItems[index] = _lineItems[index].copy(amount = amount)
+        _lineItemsFlow.value = _lineItems.toList()
+    }
+
     override fun removeProductCompletely(productId: Int) {
         val index = findProduct(productId)
 

@@ -11,4 +11,5 @@ interface CartRepository {
     fun getTotal(): Double
     fun getLineItems(): Flow<List<LineItem>>
     fun clearCart()
+    fun setProductAmount(productId: Int, amount: Int)
 }

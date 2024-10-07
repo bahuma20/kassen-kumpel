@@ -6,5 +6,6 @@ data class CartUseCases(
     val removeProductCompletelyFromCart: RemoveProductCompletelyFromCart,
     val getLineItemsInCart: GetLineItemsInCart,
     val getCartTotal: GetCartTotal,
-    val clearCart: ClearCart
+    val clearCart: ClearCart,
+    val setProductAmount: SetProductAmount,
 )

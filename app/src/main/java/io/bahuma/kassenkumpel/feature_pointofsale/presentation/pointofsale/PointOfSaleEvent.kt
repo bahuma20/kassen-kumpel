@@ -9,6 +9,8 @@ sealed class PointOfSaleEvent {
     class RemoveProductCompletelyFromCart(val productId: Int) : PointOfSaleEvent()
     data object ClearCartEvent : PointOfSaleEvent()
     class PayEvent(val paymentMethod: PaymentMethod) : PointOfSaleEvent()
+    class ChangeLineItemAmount(val productId: Int, val newAmount: Int) : PointOfSaleEvent()
+
     data object PayCashEvent : PointOfSaleEvent()
     data object ClosePaymentDialogEvent : PointOfSaleEvent()
     data object SnackbarCloseEvent : PointOfSaleEvent()

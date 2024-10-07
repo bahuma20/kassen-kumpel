@@ -20,7 +20,7 @@ Dieses Projekt wird aktiv entwickelt und befindet sich im Moment in einer frühe
     - [x] Berechnung des Gesamtpreises im Warenkorb
     - [x] Entfernen einzelner Produkte aus dem Warenkorb
     - [x] Entfernen aller Produkte aus dem Warenkorb
-    - [ ] Bearbeiten der Anzahl der Produkte im Warenkorb
+    - [x] Bearbeiten der Anzahl der Produkte im Warenkorb
     - [ ] Hinzufügen von Individuellen Beträgen (ohne Produkt)
         - [ ] Kommentar für individuelle Beträge
         - [ ] Negative individuelle Beträge
