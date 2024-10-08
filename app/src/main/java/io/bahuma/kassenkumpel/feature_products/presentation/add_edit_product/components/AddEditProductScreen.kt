@@ -8,6 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +28,7 @@ import io.bahuma.kassenkumpel.feature_products.presentation.util.DecimalFormatte
 import io.bahuma.kassenkumpel.feature_products.presentation.util.DecimalInputVisualTransformation
 import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditProductScreen(
     navController: NavController,
@@ -89,6 +95,67 @@ fun AddEditProductScreen(
             },
             modifier = Modifier.width(400.dp)
         )
+
+        Spacer(Modifier.height(spaceBetweenFields))
+
+        ExposedDropdownMenuBox(
+            expanded = viewModel.categoryDropdownOpen.value,
+            onExpandedChange = {
+                if (it) {
+                    viewModel.onEvent(AddEditProductEvent.OpenCategoryDropdown)
+                } else {
+                    viewModel.onEvent(AddEditProductEvent.CloseCategoryDropdown)
+                }
+            }
+        ) {
+            var value = "- Keine Kategorie -"
+
+            try {
+                value =
+                    viewModel.categoryOptions.first { category -> category.categoryId == viewModel.productCategoryId.value }.name
+            } catch (_: NoSuchElementException) {
+            }
+
+            OutlinedTextField(
+                value = value,
+                onValueChange = {},
+                readOnly = true,
+                label = {
+                    Text(text = "Kategorie")
+                },
+                modifier = Modifier
+                    .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+            )
+
+            ExposedDropdownMenu(
+                expanded = viewModel.categoryDropdownOpen.value,
+                onDismissRequest = { viewModel.onEvent(AddEditProductEvent.CloseCategoryDropdown) }
+            ) {
+                DropdownMenuItem(
+                    text = { Text(text = "- Keine Kategorie -") },
+                    onClick = { viewModel.onEvent(AddEditProductEvent.SelectedCategory(null)) },
+                )
+
+                for (category in viewModel.categoryOptions) {
+                    DropdownMenuItem(
+                        text = { Text(text = category.name) },
+                        onClick = { viewModel.onEvent(AddEditProductEvent.SelectedCategory(category.categoryId)) },
+                        leadingIcon = if (category.icon != null) {
+                            {
+                                Icon(
+                                    imageVector = category.getCategoryIcon(),
+                                    contentDescription = category.name
+                                )
+                            }
+                        } else {
+                            null
+                        }
+                    )
+                }
+            }
+        }
+
+
 
         Spacer(Modifier.height(spaceBetweenFields))
 

@@ -21,7 +21,7 @@ Dieses Projekt wird aktiv entwickelt und befindet sich im Moment in einer frühe
     - [x] Kategorien bearbeiten
     - [x] Kategorien löschen
     - [x] Icons von Kategorien auswählen
-    - [ ] Produkte Kategorien zuweisen
+    - [x] Produkte Kategorien zuweisen
 - [ ] Point of Sale
     - [x] Auswahl der Produkte
     - [x] Berechnung des Gesamtpreises im Warenkorb
