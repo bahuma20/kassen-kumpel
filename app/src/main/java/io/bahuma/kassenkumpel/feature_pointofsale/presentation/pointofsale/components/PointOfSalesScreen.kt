@@ -2,6 +2,7 @@ package io.bahuma.kassenkumpel.feature_pointofsale.presentation.pointofsale.comp
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -48,22 +49,36 @@ fun PointOfSalesScreen(
         { viewModel.onEvent(PointOfSaleEvent.SnackbarCloseEvent) })
 
     Row(modifier = modifier) {
-        ProductGrid(
-            viewModel.products,
-            itemsInCart.value,
-            onItemAdded = { item ->
-                viewModel.onEvent(PointOfSaleEvent.AddProductToCart(item))
-            },
-            onItemRemoved = { item ->
-                if (item.id != null) {
-                    viewModel.onEvent(PointOfSaleEvent.RemoveProductFromCart(item.id))
-                }
-            },
+        Column(
             modifier = Modifier
                 .weight(2f)
                 .fillMaxHeight()
                 .background(Color.White)
-        )
+        ) {
+            CategoryFilter(
+                categories = viewModel.categories,
+                selectedCategory = uiState.selectedCategory,
+                onSelectedCategory = {
+                    viewModel.onEvent(
+                        PointOfSaleEvent.SelectCategory(it)
+                    )
+                }
+            )
+
+            ProductGrid(
+                viewModel.products,
+                itemsInCart.value,
+                onItemAdded = { item ->
+                    viewModel.onEvent(PointOfSaleEvent.AddProductToCart(item))
+                },
+                onItemRemoved = { item ->
+                    if (item.id != null) {
+                        viewModel.onEvent(PointOfSaleEvent.RemoveProductFromCart(item.id))
+                    }
+                }
+            )
+        }
+
 
         Cart(
             lineItems = viewModel.lineItems,

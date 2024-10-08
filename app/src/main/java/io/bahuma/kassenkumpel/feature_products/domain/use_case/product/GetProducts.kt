@@ -8,11 +8,20 @@ import kotlinx.coroutines.flow.map
 class GetProducts(
     private val repository: ProductRepository
 ) {
-    operator fun invoke(includeDeleted: Boolean = false): Flow<List<Product>> {
+    operator fun invoke(
+        includeDeleted: Boolean = false,
+        filterByCategoryId: Int? = null
+    ): Flow<List<Product>> {
         var flow = repository.getProducts()
 
         if (!includeDeleted) {
             flow = flow.map { products -> products.filter { product -> !product.deleted }.toList() }
+        }
+
+        if (filterByCategoryId != null) {
+            flow = flow.map { products ->
+                products.filter { product -> product.categoryId == filterByCategoryId }.toList()
+            }
         }
 
         return flow.map { products ->

@@ -20,7 +20,7 @@ Dieses Projekt wird aktiv entwickelt und befindet sich im Moment in einer frühe
     - [x] Kategorien hinzufügen
     - [x] Kategorien bearbeiten
     - [x] Kategorien löschen
-    - [ ] Icons von Kategorien auswählen
+    - [x] Icons von Kategorien auswählen
     - [ ] Produkte Kategorien zuweisen
 - [ ] Point of Sale
     - [x] Auswahl der Produkte
@@ -28,7 +28,7 @@ Dieses Projekt wird aktiv entwickelt und befindet sich im Moment in einer frühe
     - [x] Entfernen einzelner Produkte aus dem Warenkorb
     - [x] Entfernen aller Produkte aus dem Warenkorb
     - [x] Bearbeiten der Anzahl der Produkte im Warenkorb
-    - [ ] Produkte nach Kategorie filtern
+    - [x] Produkte nach Kategorie filtern
     - [ ] Hinzufügen von Individuellen Beträgen (ohne Produkt)
         - [ ] Kommentar für individuelle Beträge
         - [ ] Negative individuelle Beträge

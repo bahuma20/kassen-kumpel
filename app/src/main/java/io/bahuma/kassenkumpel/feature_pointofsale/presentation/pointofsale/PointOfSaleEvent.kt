@@ -1,6 +1,7 @@
 package io.bahuma.kassenkumpel.feature_pointofsale.presentation.pointofsale
 
 import io.bahuma.kassenkumpel.core.model.Product
+import io.bahuma.kassenkumpel.feature_products.domain.model.Category
 import io.bahuma.kassenkumpel.feature_transactions.domain.model.PaymentMethod
 
 sealed class PointOfSaleEvent {
@@ -10,8 +11,8 @@ sealed class PointOfSaleEvent {
     data object ClearCartEvent : PointOfSaleEvent()
     class PayEvent(val paymentMethod: PaymentMethod) : PointOfSaleEvent()
     class ChangeLineItemAmount(val productId: Int, val newAmount: Int) : PointOfSaleEvent()
-
     data object PayCashEvent : PointOfSaleEvent()
     data object ClosePaymentDialogEvent : PointOfSaleEvent()
     data object SnackbarCloseEvent : PointOfSaleEvent()
+    class SelectCategory(val category: Category?) : PointOfSaleEvent()
 }

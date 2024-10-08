@@ -14,6 +14,8 @@ import io.bahuma.kassenkumpel.core.controller.UserMessage
 import io.bahuma.kassenkumpel.core.model.Product
 import io.bahuma.kassenkumpel.feature_pointofsale.domain.model.LineItem
 import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.CartUseCases
+import io.bahuma.kassenkumpel.feature_products.domain.model.Category
+import io.bahuma.kassenkumpel.feature_products.domain.use_case.category.CategoryUseCases
 import io.bahuma.kassenkumpel.feature_products.domain.use_case.product.ProductUseCases
 import io.bahuma.kassenkumpel.feature_transactions.domain.model.Transaction
 import io.bahuma.kassenkumpel.feature_transactions.domain.model.TransactionLineItem
@@ -28,10 +30,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PointOfSaleViewModel @Inject constructor(
-    private val cartUseCases: CartUseCases,
+    private val categoryUseCases: CategoryUseCases,
     private val productUseCases: ProductUseCases,
+    private val cartUseCases: CartUseCases,
     private val transactionUseCases: TransactionUseCases,
 ) : ViewModel() {
+    private val _categories = mutableStateListOf<Category>()
+    val categories: List<Category> = _categories
+
     private val _products = mutableStateListOf<Product>()
     val products: List<Product> = _products
 
@@ -45,11 +51,13 @@ class PointOfSaleViewModel @Inject constructor(
     val uiState: State<PointOfSaleState> = _uiState
 
 
+    private var getCategoriesJob: Job? = null
     private var getProductsJob: Job? = null
     private var getLineItemsJob: Job? = null
     private var getCartTotalJob: Job? = null
 
     init {
+        getCategories()
         getProducts()
         getLineItems()
         getCartTotal()
@@ -120,13 +128,29 @@ class PointOfSaleViewModel @Inject constructor(
             PointOfSaleEvent.SnackbarCloseEvent -> {
                 _uiState.value = uiState.value.copy(snackbarMessage = null)
             }
+
+            is PointOfSaleEvent.SelectCategory -> {
+                _uiState.value = uiState.value.copy(selectedCategory = event.category)
+                getProducts(event.category?.categoryId)
+            }
         }
     }
 
-    private fun getProducts() {
+    private fun getCategories() {
+        getCategoriesJob?.cancel()
+
+        getCategoriesJob = categoryUseCases.getCategories()
+            .onEach { categories ->
+                _categories.clear()
+                _categories.addAll(categories)
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun getProducts(filterByCategoryId: Int? = null) {
         getProductsJob?.cancel()
 
-        getProductsJob = productUseCases.getProducts()
+        getProductsJob = productUseCases.getProducts(false, filterByCategoryId)
             .onEach { products ->
                 _products.clear()
                 _products.addAll(products)
