@@ -6,9 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.Category
+import androidx.compose.material.icons.filled.Euro
+import androidx.compose.material.icons.filled.FolderCopy
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -220,7 +221,7 @@ data class TopLevelRoute<T : Any>(val name: String, val route: T, val icon: Imag
 
 val topLevelRoutes = listOf(
     TopLevelRoute("Kasse", PointOfSaleScreen, Icons.Default.ShoppingCart),
-    TopLevelRoute("Produkte", ProductsScreen, Icons.AutoMirrored.Default.List),
-    TopLevelRoute("Kategorien", CategoriesScreen, Icons.AutoMirrored.Default.List),
-    TopLevelRoute("Transaktionen", TransactionsScreen, Icons.Default.PlayArrow)
+    TopLevelRoute("Produkte", ProductsScreen, Icons.Default.Category),
+    TopLevelRoute("Kategorien", CategoriesScreen, Icons.Default.FolderCopy),
+    TopLevelRoute("Transaktionen", TransactionsScreen, Icons.Default.Euro)
 )

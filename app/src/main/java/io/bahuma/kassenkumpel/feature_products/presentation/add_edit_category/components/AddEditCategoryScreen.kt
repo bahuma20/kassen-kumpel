@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -52,6 +53,17 @@ fun AddEditCategoryScreen(
             label = {
                 Text(text = "Name")
             }
+        )
+
+        Spacer(Modifier.height(spaceBetweenFields))
+
+        IconPicker(
+            "Icon",
+            iconState,
+            onIconChanged = {
+                viewModel.onEvent(AddEditCategoryEvent.ChangeIcon(it))
+            },
+            modifier = Modifier.width(400.dp)
         )
 
         Spacer(Modifier.height(spaceBetweenFields))
