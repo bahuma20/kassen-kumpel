@@ -8,6 +8,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun NumberInputButton(
@@ -17,13 +18,13 @@ fun NumberInputButton(
     content: @Composable () -> Unit,
 ) {
     val paddingBetween = 4.dp
-    val innerPadding = 16.dp
+    val innerPadding = PaddingValues(16.dp, 20.dp)
 
     if (withBorder) {
         OutlinedButton(
             onClick = onClick,
             modifier = modifier.padding(paddingBetween),
-            contentPadding = PaddingValues(innerPadding)
+            contentPadding = innerPadding,
         ) {
             content()
         }
@@ -31,7 +32,7 @@ fun NumberInputButton(
         TextButton(
             onClick = onClick,
             modifier = modifier.padding(paddingBetween),
-            contentPadding = PaddingValues(innerPadding)
+            contentPadding = innerPadding
         ) {
             content()
         }
@@ -50,6 +51,6 @@ fun NumberInputButton(
         withBorder = withBorder,
         onClick = onClick
     ) {
-        Text(text = label)
+        Text(text = label, fontSize = 20.sp)
     }
 }
