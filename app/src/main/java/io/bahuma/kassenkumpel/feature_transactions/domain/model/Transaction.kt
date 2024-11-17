@@ -1,5 +1,6 @@
 package io.bahuma.kassenkumpel.feature_transactions.domain.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -15,6 +16,7 @@ data class Transaction(
     val paymentMethod: PaymentMethod,
     val timestamp: Instant = Instant.now(),
     @PrimaryKey val transactionId: Long? = null,
+    @ColumnInfo(defaultValue = "null") val externalTransactionId: String? = null,
 )
 
 enum class PaymentMethod {

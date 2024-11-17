@@ -1,5 +1,6 @@
 package io.bahuma.kassenkumpel.feature_transactions.data.data_source
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import io.bahuma.kassenkumpel.feature_transactions.domain.model.Transaction
@@ -7,7 +8,10 @@ import io.bahuma.kassenkumpel.feature_transactions.domain.model.TransactionLineI
 
 @Database(
     entities = [Transaction::class, TransactionLineItem::class],
-    version = 1
+    version = 2,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2),
+    ]
 )
 abstract class TransactionDatabase : RoomDatabase() {
     abstract val transactionDao: TransactionDao

@@ -1,6 +1,7 @@
 package io.bahuma.kassenkumpel.feature_pointofsale.presentation.pointofsale.components
 
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,9 +22,11 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import io.bahuma.kassenkumpel.core.controller.SnackbarMessageHandler
+import io.bahuma.kassenkumpel.feature_pointofsale.domain.contract.SumUpPaymentForResult
 import io.bahuma.kassenkumpel.feature_pointofsale.presentation.cart.components.Cart
 import io.bahuma.kassenkumpel.feature_pointofsale.presentation.cash_payment.components.CashPayment
 import io.bahuma.kassenkumpel.feature_pointofsale.presentation.pointofsale.PointOfSaleEvent
+import io.bahuma.kassenkumpel.feature_pointofsale.presentation.pointofsale.PointOfSaleEvent.PayCardResultEvent
 import io.bahuma.kassenkumpel.feature_pointofsale.presentation.pointofsale.PointOfSaleViewModel
 import io.bahuma.kassenkumpel.feature_pointofsale.presentation.products.components.ProductGrid
 import io.bahuma.kassenkumpel.feature_transactions.domain.model.PaymentMethod
@@ -35,6 +38,10 @@ fun PointOfSalesScreen(
     modifier: Modifier = Modifier,
 ) {
     val uiState = viewModel.uiState.value
+
+    val sumupPaymentLauncher = rememberLauncherForActivityResult(SumUpPaymentForResult()) {
+        viewModel.onEvent(PayCardResultEvent(it.data))
+    }
 
     val itemsInCart: State<Map<Int, Int>> = remember {
         derivedStateOf {
@@ -99,7 +106,7 @@ fun PointOfSalesScreen(
                     )
                 )
             },
-            onPayCard = { viewModel.onEvent(PointOfSaleEvent.PayEvent(PaymentMethod.CARD)) },
+            onPayCard = { viewModel.onEvent(PointOfSaleEvent.PayCardEvent(sumupPaymentLauncher)) },
             onPayCash = { viewModel.onEvent(PointOfSaleEvent.PayCashEvent) },
             onPayLater = {},
             onClearCart = { viewModel.onEvent(PointOfSaleEvent.ClearCartEvent) },
@@ -111,7 +118,7 @@ fun PointOfSalesScreen(
 
     if (uiState.cashPaymentModalOpen) {
         Dialog(onDismissRequest = {
-            viewModel.onEvent(PointOfSaleEvent.ClosePaymentDialogEvent)
+            viewModel.onEvent(PointOfSaleEvent.CloseCashPaymentDialogEvent)
         }) {
             Card(
                 modifier = Modifier
@@ -124,7 +131,7 @@ fun PointOfSalesScreen(
                 CashPayment(
                     totalAmount = viewModel.cartTotal.value,
                     countLineItems = viewModel.lineItems.size,
-                    onClose = { viewModel.onEvent(PointOfSaleEvent.ClosePaymentDialogEvent) },
+                    onClose = { viewModel.onEvent(PointOfSaleEvent.CloseCashPaymentDialogEvent) },
                     onComplete = { viewModel.onEvent(PointOfSaleEvent.PayEvent(PaymentMethod.CASH)) },
                     modifier = Modifier.padding(16.dp)
                 )

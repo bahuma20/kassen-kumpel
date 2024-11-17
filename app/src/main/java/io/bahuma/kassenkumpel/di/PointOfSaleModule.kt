@@ -6,14 +6,17 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.bahuma.kassenkumpel.feature_pointofsale.data.repository.CartRepositoryImpl
 import io.bahuma.kassenkumpel.feature_pointofsale.domain.repository.CartRepository
-import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.AddProductToCart
-import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.CartUseCases
-import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.ClearCart
-import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.GetCartTotal
-import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.GetLineItemsInCart
-import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.RemoveProductCompletelyFromCart
-import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.RemoveProductFromCart
-import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.SetProductAmount
+import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.card_payment.CardPaymentUseCases
+import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.card_payment.Checkout
+import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.card_payment.PrepareCheckout
+import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.cart.AddProductToCart
+import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.cart.CartUseCases
+import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.cart.ClearCart
+import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.cart.GetCartTotal
+import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.cart.GetLineItemsInCart
+import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.cart.RemoveProductCompletelyFromCart
+import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.cart.RemoveProductFromCart
+import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.cart.SetProductAmount
 import javax.inject.Singleton
 
 @Module
@@ -39,6 +42,15 @@ object PointOfSaleModule {
             getLineItemsInCart = GetLineItemsInCart(cartRepository),
             getCartTotal = GetCartTotal(cartRepository),
             clearCart = ClearCart(cartRepository)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideCardPaymentUseCases(): CardPaymentUseCases {
+        return CardPaymentUseCases(
+            prepareCheckout = PrepareCheckout(),
+            checkout = Checkout()
         )
     }
 }

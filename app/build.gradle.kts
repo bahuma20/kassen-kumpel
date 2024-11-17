@@ -25,6 +25,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        manifestPlaceholders["appAuthRedirectScheme"] =
+            "io.bahuma.kassenkumpel" // Needed for SumUp SDK
     }
 
     buildTypes {
@@ -81,6 +83,8 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.compose.material.material.icons.extended)
+    implementation(libs.sumup.merchant.sdk)
+    implementation(libs.net.openid.appauth) // Needed for SumUp SDK
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

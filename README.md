@@ -34,6 +34,11 @@ Dieses Projekt wird aktiv entwickelt und befindet sich im Moment in einer frühe
         - [ ] Negative individuelle Beträge
 - [x] Barzahlung mit Rückgeldberechnung
 - [ ] Kartenzahlung mit SumUp Geräten
+    - [x] Starten des Bezahlvorgangs vom Point of Sale aus
+    - [x] Speichern der Transaktion mit SumUp Transaktions-ID
+    - [ ] Zahlungs-Button abhängig vom Login-Status (+ Error-Handling bei abgelaufenen Tokens)
+    - [ ] Einstellungs-Seite
+        - [ ] Login per OAuth
     - [ ] Rückbuchung von Kartenzahlungen
 - [ ] Anschreiben (Gesamtzahlung am Ende einer Veranstaltung)
     - [ ] Anschreibungs-Konten anlegen

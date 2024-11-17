@@ -1,4 +1,4 @@
-package io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case
+package io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.cart
 
 import io.bahuma.kassenkumpel.feature_pointofsale.domain.model.LineItem
 import io.bahuma.kassenkumpel.feature_pointofsale.domain.repository.CartRepository

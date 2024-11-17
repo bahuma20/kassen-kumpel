@@ -8,15 +8,18 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sumup.merchant.reader.api.SumUpAPI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.bahuma.kassenkumpel.core.controller.SnackbarMessage
 import io.bahuma.kassenkumpel.core.controller.UserMessage
 import io.bahuma.kassenkumpel.core.model.Product
 import io.bahuma.kassenkumpel.feature_pointofsale.domain.model.LineItem
-import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.CartUseCases
+import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.card_payment.CardPaymentUseCases
+import io.bahuma.kassenkumpel.feature_pointofsale.domain.use_case.cart.CartUseCases
 import io.bahuma.kassenkumpel.feature_products.domain.model.Category
 import io.bahuma.kassenkumpel.feature_products.domain.use_case.category.CategoryUseCases
 import io.bahuma.kassenkumpel.feature_products.domain.use_case.product.ProductUseCases
+import io.bahuma.kassenkumpel.feature_transactions.domain.model.PaymentMethod
 import io.bahuma.kassenkumpel.feature_transactions.domain.model.Transaction
 import io.bahuma.kassenkumpel.feature_transactions.domain.model.TransactionLineItem
 import io.bahuma.kassenkumpel.feature_transactions.domain.use_case.TransactionUseCases
@@ -34,7 +37,10 @@ class PointOfSaleViewModel @Inject constructor(
     private val productUseCases: ProductUseCases,
     private val cartUseCases: CartUseCases,
     private val transactionUseCases: TransactionUseCases,
+    private val cardPaymentUseCases: CardPaymentUseCases,
 ) : ViewModel() {
+    private val TAG = "PointOfSaleViewModel"
+
     private val _categories = mutableStateListOf<Category>()
     val categories: List<Category> = _categories
 
@@ -66,6 +72,11 @@ class PointOfSaleViewModel @Inject constructor(
     fun onEvent(event: PointOfSaleEvent) {
         when (event) {
             is PointOfSaleEvent.AddProductToCart -> {
+                if (lineItems.isEmpty()) {
+                    // Prepare card payment when first item is added to cart
+                    cardPaymentUseCases.prepareCheckout()
+                }
+
                 cartUseCases.addProductToCart(event.product, event.amount)
             }
 
@@ -86,6 +97,10 @@ class PointOfSaleViewModel @Inject constructor(
             }
 
             is PointOfSaleEvent.PayEvent -> {
+                if (event.paymentMethod == PaymentMethod.CARD && event.externalTransactionId == null) {
+                    throw IllegalStateException("A external transaction id is required for a card payment")
+                }
+
                 viewModelScope.launch(Dispatchers.IO) {
                     val transactionLineItems = lineItems.map {
                         TransactionLineItem(
@@ -99,8 +114,9 @@ class PointOfSaleViewModel @Inject constructor(
 
                     transactionUseCases.addTransaction(
                         Transaction(
-                            cartUseCases.getCartTotal().first(),
-                            event.paymentMethod
+                            amount = cartUseCases.getCartTotal().first(),
+                            paymentMethod = event.paymentMethod,
+                            externalTransactionId = event.externalTransactionId
                         ), transactionLineItems
                     )
 
@@ -121,7 +137,30 @@ class PointOfSaleViewModel @Inject constructor(
                 _uiState.value = uiState.value.copy(cashPaymentModalOpen = true)
             }
 
-            PointOfSaleEvent.ClosePaymentDialogEvent -> {
+            is PointOfSaleEvent.PayCardEvent -> {
+                cardPaymentUseCases.checkout(cartTotal.value, event.launcher)
+            }
+
+            is PointOfSaleEvent.PayCardResultEvent -> {
+                val extra = event.intent?.extras
+
+                val resultCode = extra?.getInt(SumUpAPI.Response.RESULT_CODE)
+                val message = extra?.getString(SumUpAPI.Response.MESSAGE)
+
+                val txCode = extra?.getString(SumUpAPI.Response.TX_CODE)
+
+                val transactionInfo = extra?.getString(SumUpAPI.Response.TX_INFO)
+
+                Log.i(TAG, "launcher: $resultCode $message $txCode $transactionInfo")
+
+                if (resultCode == SumUpAPI.Response.ResultCode.SUCCESSFUL) {
+                    onEvent(PointOfSaleEvent.PayEvent(PaymentMethod.CARD, txCode))
+                } else {
+                    // TODO: Error handling. Is anything needed? The SumUp SDK already displays the error page...
+                }
+            }
+
+            PointOfSaleEvent.CloseCashPaymentDialogEvent -> {
                 _uiState.value = uiState.value.copy(cashPaymentModalOpen = false)
             }
 
@@ -163,7 +202,7 @@ class PointOfSaleViewModel @Inject constructor(
 
         getLineItemsJob = cartUseCases.getLineItemsInCart()
             .onEach { lineItems ->
-                Log.i("PointOfSaleViewModel", "getLineItems: $lineItems")
+                Log.i(TAG, "getLineItems: $lineItems")
                 _lineItems.clear()
                 _lineItems.addAll(lineItems)
             }

@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Euro
 import androidx.compose.material.icons.filled.FolderCopy
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -41,6 +42,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.sumup.merchant.reader.api.SumUpAPI
+import com.sumup.merchant.reader.api.SumUpLogin
+import com.sumup.merchant.reader.api.SumUpState
 import dagger.hilt.android.AndroidEntryPoint
 import io.bahuma.kassenkumpel.core.controller.ProvideSnackbarController
 import io.bahuma.kassenkumpel.feature_pointofsale.presentation.pointofsale.components.PointOfSalesScreen
@@ -60,6 +64,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        SumUpState.init(this)
+
         setContent {
             val navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -78,6 +84,18 @@ class MainActivity : ComponentActivity() {
                             Text("KassenKumpel 1.0", modifier = Modifier.padding(16.dp))
 
                             HorizontalDivider()
+
+                            // TODO: move this button to a place where it belongs
+                            Button(onClick = {
+                                scope.launch {
+                                    val login =
+                                        SumUpLogin.builder("sup_afk_xhxqPBaNBExqDJf97p1EPexF4XIAkqcw") // TODO: extract to properties and use production code for prod bundle
+                                            .build()
+                                    SumUpAPI.openLoginActivity(this@MainActivity, login, 1)
+                                }
+                            }) {
+                                Text(text = "Login")
+                            }
 
                             topLevelRoutes.forEach { topLevelRoute ->
                                 NavigationDrawerItem(label = { Text(topLevelRoute.name) },

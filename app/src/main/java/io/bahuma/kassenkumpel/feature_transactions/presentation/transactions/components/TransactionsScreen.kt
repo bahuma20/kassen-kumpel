@@ -18,7 +18,8 @@ fun TransactionsScreen(
         items(state.transactions) {
             Text(
                 text = it.transactionId.toString() + " - " + android.icu.text.DateFormat.getDateTimeInstance()
-                    .format(Date.from(it.timestamp)) + " - " + it.amount.toString() + " - " + it.paymentMethod.name
+                    .format(Date.from(it.timestamp)) + " - " + it.amount.toString() + " - " + it.paymentMethod.name + " - " + (it.externalTransactionId
+                    ?: "null")
             )
         }
     }
