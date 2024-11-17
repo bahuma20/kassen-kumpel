@@ -19,8 +19,9 @@ fun CartPaymentButtons(
     onPayCash: () -> Unit,
     onPayCard: () -> Unit,
     onPayLater: () -> Unit,
-
-    ) {
+    cardPaymentEnabled: Boolean = true,
+    anschreibenPaymentVisible: Boolean = false,
+) {
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -30,18 +31,20 @@ fun CartPaymentButtons(
         val buttonModifier = Modifier
         val buttonFontSize = 16.sp
 
-        FilledTonalButton(
-            onClick = onPayLater,
-            contentPadding = contentPadding,
-            modifier = buttonModifier
-        ) {
-            Text(
-                text = "Anschreiben",
-                fontSize = buttonFontSize
-            )
-        }
+        if (anschreibenPaymentVisible) {
+            FilledTonalButton(
+                onClick = onPayLater,
+                contentPadding = contentPadding,
+                modifier = buttonModifier
+            ) {
+                Text(
+                    text = "Anschreiben",
+                    fontSize = buttonFontSize
+                )
+            }
 
-        Spacer(Modifier.width(8.dp))
+            Spacer(Modifier.width(8.dp))
+        }
 
         Button(
             onClick = onPayCash,
@@ -59,7 +62,8 @@ fun CartPaymentButtons(
         Button(
             onClick = onPayCard,
             contentPadding = contentPadding,
-            modifier = buttonModifier.weight(1f)
+            modifier = buttonModifier.weight(1f),
+            enabled = cardPaymentEnabled
         ) {
             Text(
                 text = "Karte",

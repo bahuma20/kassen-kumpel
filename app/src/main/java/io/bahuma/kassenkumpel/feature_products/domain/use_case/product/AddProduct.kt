@@ -15,7 +15,7 @@ class AddProduct(
             throw InvalidProductException("The title of the product can't be empty.")
         }
 
-        if (product.price.isNaN() || product.price <= 0) {
+        if (product.price.isNaN()) {
             throw InvalidProductException("The product price is invalid.")
         }
 

@@ -14,10 +14,6 @@ class AddTransaction(
         transaction: Transaction,
         transactionLineItems: List<TransactionLineItem>
     ) {
-        if (transaction.amount <= 0) {
-            throw InvalidTransactionException("Amount must be greater than 0")
-        }
-
         if (transactionLineItems.isEmpty()) {
             throw InvalidTransactionException("Transaction must have at least one line item")
         }

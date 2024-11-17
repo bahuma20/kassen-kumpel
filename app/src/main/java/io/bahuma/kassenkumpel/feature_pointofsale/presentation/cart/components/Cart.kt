@@ -116,7 +116,8 @@ fun Cart(
             CartPaymentButtons(
                 onPayCard = { onPayCard(totalAmount) },
                 onPayCash = { onPayCash(totalAmount) },
-                onPayLater = { onPayLater(totalAmount) }
+                onPayLater = { onPayLater(totalAmount) },
+                cardPaymentEnabled = totalAmount > 0
             )
         }
     }

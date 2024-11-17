@@ -8,10 +8,12 @@ class DecimalFormatter(
 
     private val thousandsSeparator = symbols.groupingSeparator
     private val decimalSeparator = symbols.decimalSeparator
+    private val minusSign = symbols.minusSign
 
     fun cleanup(input: String): String {
 
-        if (input.matches("\\D".toRegex())) return ""
+        if (input.matches("-".toRegex())) return "-"
+        if (input.matches("^-?\\D".toRegex())) return ""
         if (input.matches("0+".toRegex())) return "0"
 
         val sb = StringBuilder()
@@ -23,9 +25,14 @@ class DecimalFormatter(
                 sb.append(char)
                 continue
             }
+
             if (char == decimalSeparator && !hasDecimalSep && sb.isNotEmpty()) {
                 sb.append(char)
                 hasDecimalSep = true
+            }
+
+            if (char == minusSign && sb.isEmpty()) {
+                sb.append(char)
             }
         }
 
@@ -34,7 +41,11 @@ class DecimalFormatter(
 
     fun formatForVisual(input: String): String {
 
-        val split = input.split(decimalSeparator)
+        val isNegative = input.startsWith("-")
+
+        val numberInput = if (isNegative) input.substring(1) else input
+
+        val split = numberInput.split(decimalSeparator)
 
         val intPart = split[0]
             .reversed()
@@ -44,7 +55,7 @@ class DecimalFormatter(
 
         val fractionPart = split.getOrNull(1)
 
-        return if (fractionPart == null) intPart else intPart + decimalSeparator + fractionPart
+        return (if (isNegative) "-" else "") + if (fractionPart == null) intPart else intPart + decimalSeparator + fractionPart
     }
 
     fun fromDouble(value: Double): String {
