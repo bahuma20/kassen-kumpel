@@ -14,7 +14,7 @@ Dieses Projekt wird aktiv entwickelt und befindet sich im Moment in einer frühe
     - [x] Produkte hinzufügen
     - [x] Produkte bearbeiten
     - [x] Produkte löschen
-    - [ ] Produkte mit Aufpreis (z.B. Pfand)
+    - [x] Produkte mit Aufpreis (z.B. Pfand)
     - [ ] Produkte mit negativen Preisen (z.B. Pfandrückgabe, Rabatte)
 - [ ] Verwaltung von Kategorien
     - [x] Kategorien hinzufügen

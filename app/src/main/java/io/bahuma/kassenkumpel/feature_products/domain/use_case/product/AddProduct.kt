@@ -23,6 +23,10 @@ class AddProduct(
             throw InvalidProductException("The product color is invalid.")
         }
 
+        if (product.deposit != null && product.deposit <= 0.0) {
+            throw InvalidProductException("The product deposit is invalid.")
+        }
+
         repository.insertProduct(product)
     }
 }

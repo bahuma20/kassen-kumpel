@@ -20,7 +20,15 @@ class CartRepositoryImpl : CartRepository {
         val index = findProduct(product.id)
 
         if (index < 0) {
-            _lineItems.add(LineItem(product.name, product.price, amount, product.id))
+            _lineItems.add(
+                LineItem(
+                    product.name,
+                    product.price,
+                    amount,
+                    product.id,
+                    product.deposit
+                )
+            )
             _lineItemsFlow.value = _lineItems.toList()
             return
         }

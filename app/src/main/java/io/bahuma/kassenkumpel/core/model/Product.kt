@@ -13,6 +13,7 @@ data class Product(
     @ColumnInfo(defaultValue = "null") val categoryId: Int? = null,
     @ColumnInfo(defaultValue = "false") val deleted: Boolean = false,
     @PrimaryKey val id: Int? = null,
+    @ColumnInfo(defaultValue = "null") val deposit: Double? = null,
 ) {
     fun getProductColor(): Color {
         if (color >= 0 && color < ProductColor.entries.size) {

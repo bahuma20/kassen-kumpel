@@ -5,4 +5,5 @@ data class LineItem(
     val pricePerUnit: Double,
     val amount: Int,
     val productId: Int?,
+    val depositPerUnit: Double?,
 )

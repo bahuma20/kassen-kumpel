@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -66,10 +65,21 @@ fun ProductItem(
 
             Spacer(Modifier.height(4.dp))
 
-            Text(
-                text = formatPrice(product.price),
-                color = MaterialTheme.colorScheme.secondary
-            )
+            Row {
+                Text(
+                    text = formatPrice(product.price),
+                    color = MaterialTheme.colorScheme.secondary
+                )
+
+                if (product.deposit != null) {
+                    Spacer(Modifier.width(8.dp))
+
+                    Text(
+                        text = " (+${formatPrice(product.deposit)} Pfand)",
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                }
+            }
         }
 
         Spacer(Modifier.width(8.dp))
@@ -97,5 +107,14 @@ fun ProductItemPreview() {
     Box(modifier = Modifier.padding(18.dp)) {
 
         ProductItem(Product("Kaffee", 2.5, 1))
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ProductItemWithDepositPreview() {
+    Box(modifier = Modifier.padding(18.dp)) {
+
+        ProductItem(Product("Kaffee", 2.5, 1, deposit = 1.5))
     }
 }

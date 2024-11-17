@@ -39,6 +39,9 @@ class AddEditProductViewModel @Inject constructor(
     private val _productPrice = mutableStateOf("")
     val productPrice: State<String> = _productPrice
 
+    private val _productDeposit = mutableStateOf("")
+    val productDeposit: State<String> = _productDeposit
+
     private val _productColor = mutableIntStateOf(Random.nextInt(0, ProductColor.entries.size))
     val productColor: State<Int> = _productColor
 
@@ -71,6 +74,8 @@ class AddEditProductViewModel @Inject constructor(
                     currentProductId = product.id
                     _productName.value = product.name
                     _productPrice.value = decimalFormatter.fromDouble(product.price)
+                    _productDeposit.value =
+                        product.deposit?.let { decimalFormatter.fromDouble(it) } ?: ""
                     _productColor.intValue = product.color
                     _productCategoryId.value = product.categoryId
                 }
@@ -103,6 +108,10 @@ class AddEditProductViewModel @Inject constructor(
                 _productPrice.value = decimalFormatter.cleanup(event.value)
             }
 
+            is AddEditProductEvent.EnteredDeposit -> {
+                _productDeposit.value = decimalFormatter.cleanup(event.value)
+            }
+
             is AddEditProductEvent.SelectedCategory -> {
                 _productCategoryId.value = event.value
                 _categoryDropdownOpen.value = false
@@ -119,6 +128,9 @@ class AddEditProductViewModel @Inject constructor(
                             Product(
                                 name = productName.value,
                                 price = decimalFormatter.toDouble(productPrice.value),
+                                deposit = if (productDeposit.value.isEmpty()) null else decimalFormatter.toDouble(
+                                    productDeposit.value
+                                ),
                                 color = productColor.value,
                                 categoryId = productCategoryId.value,
                                 id = currentProductId

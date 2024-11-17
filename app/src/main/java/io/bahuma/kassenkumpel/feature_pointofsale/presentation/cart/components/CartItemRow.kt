@@ -3,9 +3,11 @@ package io.bahuma.kassenkumpel.feature_pointofsale.presentation.cart.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -109,9 +111,19 @@ fun CartItemRow(
             )
 
             // Preis
-            Text(
-                text = formatPrice(lineItem.pricePerUnit * lineItem.amount),
-            )
+            Column(horizontalAlignment = Alignment.End) {
+                Text(
+                    text = formatPrice(lineItem.pricePerUnit * lineItem.amount),
+                )
+                if (lineItem.depositPerUnit != null) {
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        text = "+ Pfand ${formatPrice(lineItem.depositPerUnit * lineItem.amount)}",
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                }
+            }
+
         }
     }
 }
@@ -120,7 +132,19 @@ fun CartItemRow(
 @Composable
 fun CartItemRowPreview() {
     CartItemRow(
-        LineItem("Kaffee", 2.5, 1, 1),
+        LineItem("Kaffee", 2.5, 1, 1, null),
+        modifier = Modifier.size(400.dp, 100.dp),
+        onRemove = {
+
+        }
+    )
+}
+
+@Preview(widthDp = 400, showBackground = true)
+@Composable
+fun CartItemRowWithDepositPreview() {
+    CartItemRow(
+        LineItem("Kaffee", 2.5, 1, 1, 1.5),
         modifier = Modifier.size(400.dp, 100.dp),
         onRemove = {
 

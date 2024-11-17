@@ -8,9 +8,10 @@ import io.bahuma.kassenkumpel.feature_transactions.domain.model.TransactionLineI
 
 @Database(
     entities = [Transaction::class, TransactionLineItem::class],
-    version = 2,
+    version = 3,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
+        AutoMigration(from = 2, to = 3),
     ]
 )
 abstract class TransactionDatabase : RoomDatabase() {

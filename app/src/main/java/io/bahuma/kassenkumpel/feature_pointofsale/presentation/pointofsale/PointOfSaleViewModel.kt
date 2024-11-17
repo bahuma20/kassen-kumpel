@@ -108,6 +108,7 @@ class PointOfSaleViewModel @Inject constructor(
                             it.name,
                             it.pricePerUnit,
                             it.amount,
+                            it.depositPerUnit,
                             it.productId
                         )
                     }

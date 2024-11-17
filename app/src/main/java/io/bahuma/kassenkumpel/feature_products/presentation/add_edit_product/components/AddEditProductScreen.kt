@@ -37,6 +37,7 @@ fun AddEditProductScreen(
 ) {
     val nameState = viewModel.productName.value
     val priceState = viewModel.productPrice.value
+    val depositState = viewModel.productDeposit.value
     val colorState = viewModel.productColor.value
 
     LaunchedEffect(key1 = true) {
@@ -77,6 +78,25 @@ fun AddEditProductScreen(
             },
             label = {
                 Text(text = "Preis")
+            },
+            suffix = {
+                Text(text = "€")
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            visualTransformation = DecimalInputVisualTransformation(decimalFormatter = DecimalFormatter())
+        )
+
+        Spacer(Modifier.height(spaceBetweenFields))
+
+        OutlinedTextField(
+            value = depositState,
+            onValueChange = {
+                viewModel.onEvent(
+                    AddEditProductEvent.EnteredDeposit(it)
+                )
+            },
+            label = {
+                Text(text = "Pfand")
             },
             suffix = {
                 Text(text = "€")

@@ -9,7 +9,8 @@ class GetCartTotal(
 ) {
     operator fun invoke(): Flow<Double> {
         return repository.getLineItems().map { lineItems ->
-            lineItems.map { it.amount * it.pricePerUnit }.fold(0.0) { acc, value -> acc + value }
+            lineItems.map { it.amount * (it.pricePerUnit + (it.depositPerUnit ?: 0.0)) }
+                .fold(0.0) { acc, value -> acc + value }
         }
     }
 }

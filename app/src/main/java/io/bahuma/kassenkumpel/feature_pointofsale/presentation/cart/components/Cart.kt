@@ -157,8 +157,8 @@ fun Cart(
 @Composable
 fun CartPreview() {
     val lineItems = listOf(
-        LineItem("Kaffee", 2.5, 1, 1),
-        LineItem("Kuchen", 3.0, 10, 2),
+        LineItem("Kaffee", 2.5, 1, 1, null),
+        LineItem("Kuchen", 3.0, 10, 2, null),
     )
 
     Cart(lineItems, 12.50, {}, { _, _ -> })
