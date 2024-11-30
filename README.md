@@ -36,7 +36,7 @@ Dieses Projekt wird aktiv entwickelt und befindet sich im Moment in einer frühe
 - [ ] Kartenzahlung mit SumUp Geräten
     - [x] Starten des Bezahlvorgangs vom Point of Sale aus
     - [x] Speichern der Transaktion mit SumUp Transaktions-ID
-    - [ ] Zahlungs-Button abhängig vom Login-Status (+ Error-Handling bei abgelaufenen Tokens)
+    - [x] Zahlungs-Button abhängig vom Login-Status (+ Error-Handling bei abgelaufenen Tokens)
     - [ ] Einstellungs-Seite
         - [ ] Login per OAuth
     - [ ] Rückbuchung von Kartenzahlungen

@@ -3,15 +3,22 @@ package io.bahuma.kassenkumpel.feature_pointofsale.presentation.pointofsale.comp
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
@@ -30,10 +37,12 @@ import io.bahuma.kassenkumpel.feature_pointofsale.presentation.pointofsale.Point
 import io.bahuma.kassenkumpel.feature_pointofsale.presentation.pointofsale.PointOfSaleViewModel
 import io.bahuma.kassenkumpel.feature_pointofsale.presentation.products.components.ProductGrid
 import io.bahuma.kassenkumpel.feature_transactions.domain.model.PaymentMethod
+import kotlinx.coroutines.delay
 
 @Composable
 fun PointOfSalesScreen(
     navController: NavController,
+    sumupLoginFunction: () -> Unit,
     viewModel: PointOfSaleViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
 ) {
@@ -62,6 +71,43 @@ fun PointOfSalesScreen(
                 .fillMaxHeight()
                 .background(Color.White)
         ) {
+            if (!uiState.isLoggedIn) {
+                sumupLoginFunction()
+
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Box(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        ) {
+                            Column {
+                                Text(
+                                    "Nicht eingeloggt!",
+                                    style = MaterialTheme.typography.headlineSmall
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                Text("Um Zahlungen über SumUp zu akzeptieren, müsssen Sie Ihr SumUp-Konto verknüpfen.")
+                                Spacer(Modifier.height(8.dp))
+                                Button(onClick = sumupLoginFunction) {
+                                    Text("Einloggen")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             CategoryFilter(
                 categories = viewModel.categories,
                 selectedCategory = uiState.selectedCategory,
@@ -90,6 +136,7 @@ fun PointOfSalesScreen(
         Cart(
             lineItems = viewModel.lineItems,
             totalAmount = viewModel.cartTotal.value,
+            cardPaymentAvailable = uiState.isLoggedIn,
             onRemoveLineItem = {
                 Log.i("Bahumatest", "remove ${it.productId} x ${it.amount}")
                 viewModel.onEvent(
@@ -136,7 +183,14 @@ fun PointOfSalesScreen(
                     modifier = Modifier.padding(16.dp)
                 )
             }
+        }
+    }
 
+    LaunchedEffect(Unit) {
+        while (true) {
+            Log.i("PointOfSalesScreen", "checkLoginState")
+            viewModel.checkLoginState()
+            delay(5000)
         }
     }
 }

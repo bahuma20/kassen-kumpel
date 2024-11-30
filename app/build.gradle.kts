@@ -85,6 +85,9 @@ dependencies {
     implementation(libs.androidx.compose.material.material.icons.extended)
     implementation(libs.sumup.merchant.sdk)
     implementation(libs.net.openid.appauth) // Needed for SumUp SDK
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.okhttp)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

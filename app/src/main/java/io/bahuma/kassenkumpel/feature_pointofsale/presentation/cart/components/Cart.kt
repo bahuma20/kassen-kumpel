@@ -41,6 +41,7 @@ import io.bahuma.kassenkumpel.utils.formatPrice
 fun Cart(
     lineItems: List<LineItem>,
     totalAmount: Double,
+    cardPaymentAvailable: Boolean = false,
     onRemoveLineItem: (LineItem) -> Unit,
     onChangeLineItemAmount: (LineItem, Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -117,7 +118,7 @@ fun Cart(
                 onPayCard = { onPayCard(totalAmount) },
                 onPayCash = { onPayCash(totalAmount) },
                 onPayLater = { onPayLater(totalAmount) },
-                cardPaymentEnabled = totalAmount > 0
+                cardPaymentEnabled = totalAmount > 0 && cardPaymentAvailable,
             )
         }
     }
@@ -162,5 +163,5 @@ fun CartPreview() {
         LineItem("Kuchen", 3.0, 10, 2, null),
     )
 
-    Cart(lineItems, 12.50, {}, { _, _ -> })
+    Cart(lineItems, 12.50, true, {}, { _, _ -> })
 }

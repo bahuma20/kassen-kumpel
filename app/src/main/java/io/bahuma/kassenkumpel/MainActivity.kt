@@ -181,7 +181,7 @@ class MainActivity : ComponentActivity() {
                                 modifier = Modifier.padding(contentPadding)
                             ) {
                                 composable<PointOfSaleScreen> {
-                                    PointOfSalesScreen(navController)
+                                    PointOfSalesScreen(navController, ::sumupLogin)
                                 }
 
                                 composable<ProductsScreen> {
@@ -210,6 +210,13 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    fun sumupLogin() {
+        val login =
+            SumUpLogin.builder("sup_afk_xhxqPBaNBExqDJf97p1EPexF4XIAkqcw") // TODO: extract to properties and use production code for prod bundle
+                .build()
+        SumUpAPI.openLoginActivity(this@MainActivity, login, 1)
     }
 }
 

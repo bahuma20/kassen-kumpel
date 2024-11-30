@@ -7,4 +7,5 @@ data class PointOfSaleState(
     val selectedCategory: Category? = null,
     val cashPaymentModalOpen: Boolean = false,
     val snackbarMessage: SnackbarMessage? = null,
+    val isLoggedIn: Boolean = false,
 )

@@ -67,6 +67,7 @@ class PointOfSaleViewModel @Inject constructor(
         getProducts()
         getLineItems()
         getCartTotal()
+        checkLoginState()
     }
 
     fun onEvent(event: PointOfSaleEvent) {
@@ -216,6 +217,13 @@ class PointOfSaleViewModel @Inject constructor(
         getCartTotalJob = cartUseCases.getCartTotal()
             .onEach { total -> _cartTotal.doubleValue = total }
             .launchIn(viewModelScope)
+    }
+
+    fun checkLoginState() {
+        val loginState = SumUpAPI.isLoggedIn()
+        if (loginState != uiState.value.isLoggedIn) {
+            _uiState.value = uiState.value.copy(isLoggedIn = loginState)
+        }
     }
 
 }
