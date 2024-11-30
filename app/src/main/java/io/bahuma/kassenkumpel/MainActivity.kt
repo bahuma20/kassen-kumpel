@@ -10,8 +10,8 @@ import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Euro
 import androidx.compose.material.icons.filled.FolderCopy
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -52,6 +52,7 @@ import io.bahuma.kassenkumpel.feature_products.presentation.add_edit_category.co
 import io.bahuma.kassenkumpel.feature_products.presentation.add_edit_product.components.AddEditProductScreen
 import io.bahuma.kassenkumpel.feature_products.presentation.categories.components.CategoriesScreen
 import io.bahuma.kassenkumpel.feature_products.presentation.products.components.ProductsScreen
+import io.bahuma.kassenkumpel.feature_settings.presentation.settings.components.SettingsScreen
 import io.bahuma.kassenkumpel.feature_transactions.presentation.transactions.components.TransactionsScreen
 import io.bahuma.kassenkumpel.ui.theme.KassenKumpelTheme
 import kotlinx.coroutines.launch
@@ -84,18 +85,6 @@ class MainActivity : ComponentActivity() {
                             Text("KassenKumpel 1.0", modifier = Modifier.padding(16.dp))
 
                             HorizontalDivider()
-
-                            // TODO: move this button to a place where it belongs
-                            Button(onClick = {
-                                scope.launch {
-                                    val login =
-                                        SumUpLogin.builder("sup_afk_xhxqPBaNBExqDJf97p1EPexF4XIAkqcw") // TODO: extract to properties and use production code for prod bundle
-                                            .build()
-                                    SumUpAPI.openLoginActivity(this@MainActivity, login, 1)
-                                }
-                            }) {
-                                Text(text = "Login")
-                            }
 
                             topLevelRoutes.forEach { topLevelRoute ->
                                 NavigationDrawerItem(label = { Text(topLevelRoute.name) },
@@ -203,6 +192,10 @@ class MainActivity : ComponentActivity() {
                                 composable<TransactionsScreen> {
                                     TransactionsScreen()
                                 }
+
+                                composable<SettingsScreen> {
+                                    SettingsScreen()
+                                }
                             }
                         }
                     }
@@ -242,11 +235,15 @@ data class AddEditCategoryScreen(
 @Serializable
 object TransactionsScreen
 
+@Serializable
+object SettingsScreen
+
 data class TopLevelRoute<T : Any>(val name: String, val route: T, val icon: ImageVector)
 
 val topLevelRoutes = listOf(
     TopLevelRoute("Kasse", PointOfSaleScreen, Icons.Default.ShoppingCart),
     TopLevelRoute("Produkte", ProductsScreen, Icons.Default.Category),
     TopLevelRoute("Kategorien", CategoriesScreen, Icons.Default.FolderCopy),
-    TopLevelRoute("Transaktionen", TransactionsScreen, Icons.Default.Euro)
+    TopLevelRoute("Transaktionen", TransactionsScreen, Icons.Default.Euro),
+    TopLevelRoute("Einstellungen", SettingsScreen, Icons.Default.Settings)
 )
