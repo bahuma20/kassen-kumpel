@@ -138,7 +138,6 @@ fun PointOfSalesScreen(
             totalAmount = viewModel.cartTotal.value,
             cardPaymentAvailable = uiState.isLoggedIn,
             onRemoveLineItem = {
-                Log.i("Bahumatest", "remove ${it.productId} x ${it.amount}")
                 viewModel.onEvent(
                     PointOfSaleEvent.RemoveProductCompletelyFromCart(
                         it.productId ?: -1

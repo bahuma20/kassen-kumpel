@@ -15,12 +15,12 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import io.bahuma.kassenkumpel.core.model.ProductColor
 import io.bahuma.kassenkumpel.utils.formatPrice
 
@@ -40,28 +41,28 @@ fun ProductCard(
     modifier: Modifier = Modifier
 ) {
     val topPadding = 10.dp
-    BadgedBox(
+    Box(
         modifier = modifier
             .requiredSize(135.dp + topPadding)
             .padding(top = topPadding),
-        badge = {
-            if (count > 0) {
-                Badge(
-                    containerColor = Color.Black,
-                    contentColor = Color.White,
-                    modifier = Modifier
-                        .height(24.dp)
-                        .widthIn(24.dp, 48.dp)
-                        .offset(x = (-8).dp)
-                ) {
-                    Text(
-                        text = count.toString(),
-                        fontSize = 16.sp
-                    )
-                }
+    ) {
+        if (count > 0) {
+            Badge(
+                containerColor = Color.Black,
+                contentColor = Color.White,
+                modifier = Modifier
+                    .height(24.dp)
+                    .widthIn(24.dp, 48.dp)
+                    .align(Alignment.TopEnd)
+                    .offset(8.dp, -8.dp)
+                    .zIndex(9999f)
+            ) {
+                Text(
+                    text = count.toString(),
+                    fontSize = 16.sp
+                )
             }
         }
-    ) {
         Card(
             border = BorderStroke(2.dp, Color.LightGray),
             colors = CardDefaults.cardColors().copy(containerColor = Color.Transparent),
@@ -83,16 +84,15 @@ fun ProductCard(
                     color = Color.Black
                 )
 
-                Spacer(modifier.weight(1f))
+                Spacer(Modifier.weight(1f))
 
                 // Price
                 Text(
                     text = formatPrice(price),
-                    fontSize = 16.sp,
+                    fontSize = 16.sp
+                )
 
-                    )
-
-                Spacer(modifier.height(8.dp))
+                Spacer(Modifier.height(8.dp))
 
 
                 // Color
