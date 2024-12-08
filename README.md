@@ -16,7 +16,7 @@ Dieses Projekt wird aktiv entwickelt und befindet sich im Moment in einer frühe
     - [x] Produkte löschen
     - [x] Produkte mit Aufpreis (z.B. Pfand)
     - [x] Produkte mit negativen Preisen (z.B. Pfandrückgabe, Rabatte)
-- [ ] Verwaltung von Kategorien
+- [x] Verwaltung von Kategorien
     - [x] Kategorien hinzufügen
     - [x] Kategorien bearbeiten
     - [x] Kategorien löschen
@@ -54,17 +54,21 @@ Dieses Projekt wird aktiv entwickelt und befindet sich im Moment in einer frühe
 
 ## Screenshots
 
+![point-of-sale-logged-out.jpg](docs/images/point-of-sale-logged-out.jpg)
+
 ![point-of-sale.jpg](docs/images/point-of-sale.jpg)
 
 ![cash-payment.jpg](docs/images/cash-payment.jpg)
 
-![navigation.jpg](docs/images/navigation.jpg)
+![navigation.jpg](docs/images/products.jpg)
 
 ![products.jpg](docs/images/products.jpg)
 
 ![edit-product.jpg](docs/images/edit-product.jpg)
 
 ![categories.jpg](docs/images/categories.jpg)
+
+![transactions.jpg](docs/images/transactions.jpg)
 
 ## Technologie
 
