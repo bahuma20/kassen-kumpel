@@ -30,6 +30,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import io.bahuma.kassenkumpel.R
+import io.bahuma.kassenkumpel.core.connectivity.ConnectionState
+import io.bahuma.kassenkumpel.core.connectivity.connectivityState
 import io.bahuma.kassenkumpel.core.controller.SnackbarMessageHandler
 import io.bahuma.kassenkumpel.feature_pointofsale.domain.contract.SumUpPaymentForResult
 import io.bahuma.kassenkumpel.feature_pointofsale.presentation.cart.components.Cart
@@ -39,8 +41,10 @@ import io.bahuma.kassenkumpel.feature_pointofsale.presentation.pointofsale.Point
 import io.bahuma.kassenkumpel.feature_pointofsale.presentation.pointofsale.PointOfSaleViewModel
 import io.bahuma.kassenkumpel.feature_pointofsale.presentation.products.components.ProductGrid
 import io.bahuma.kassenkumpel.feature_transactions.domain.model.PaymentMethod
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 
+@ExperimentalCoroutinesApi
 @Composable
 fun PointOfSalesScreen(
     navController: NavController,
@@ -63,6 +67,8 @@ fun PointOfSalesScreen(
                 .associateBy({ it.productId ?: 0 }, { it.amount })
         }
     }
+
+    val networkConnection = connectivityState()
 
     SnackbarMessageHandler(
         snackbarMessage = uiState.snackbarMessage,
@@ -112,6 +118,37 @@ fun PointOfSalesScreen(
                 }
             }
 
+            if (networkConnection.value === ConnectionState.Unavailable) {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Box(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        ) {
+                            Column {
+                                Text(
+                                    "Keine Internetverbindung!",
+                                    style = MaterialTheme.typography.headlineSmall
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                Text("Um Zahlungen über SumUp zu akzeptieren, muss das Gerät mit dem Internet verbunden sein. Bitte stellen Sie eine WLAN-Verbindung her. Barzahlung ist weiterhin möglich.")
+                            }
+                        }
+                    }
+                }
+            }
+
             CategoryFilter(
                 categories = viewModel.categories,
                 selectedCategory = uiState.selectedCategory,
@@ -139,7 +176,7 @@ fun PointOfSalesScreen(
         Cart(
             lineItems = viewModel.lineItems,
             totalAmount = viewModel.cartTotal.value,
-            cardPaymentAvailable = uiState.isLoggedIn,
+            cardPaymentAvailable = uiState.isLoggedIn && networkConnection.value === ConnectionState.Available,
             onRemoveLineItem = {
                 viewModel.onEvent(
                     PointOfSaleEvent.RemoveProductCompletelyFromCart(
