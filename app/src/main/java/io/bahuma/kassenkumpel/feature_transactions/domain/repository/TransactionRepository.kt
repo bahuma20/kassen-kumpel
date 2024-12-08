@@ -10,4 +10,6 @@ interface TransactionRepository {
     fun getTransactionsWithTransactionLineItems(): Flow<List<TransactionWithTransactionLineItems>>
 
     suspend fun insertTransaction(transaction: Transaction): Long
+
+    suspend fun deleteAllTransactions(): Int
 }

@@ -41,7 +41,7 @@ fun TransactionItem(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .background(Color.White)
-            .padding(8.dp)
+            .padding(16.dp)
             .clickable(
                 onClick = {
                     detailsOpen.value = !detailsOpen.value

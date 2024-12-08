@@ -13,6 +13,7 @@ import io.bahuma.kassenkumpel.feature_transactions.domain.repository.Transaction
 import io.bahuma.kassenkumpel.feature_transactions.domain.repository.TransactionRepository
 import io.bahuma.kassenkumpel.feature_transactions.domain.service.SumUpClient
 import io.bahuma.kassenkumpel.feature_transactions.domain.use_case.AddTransaction
+import io.bahuma.kassenkumpel.feature_transactions.domain.use_case.DeleteAllTransactions
 import io.bahuma.kassenkumpel.feature_transactions.domain.use_case.GetExternalTransaction
 import io.bahuma.kassenkumpel.feature_transactions.domain.use_case.GetTransactions
 import io.bahuma.kassenkumpel.feature_transactions.domain.use_case.GetTransactionsWithTransactionLineItems
@@ -73,6 +74,7 @@ object TransactionsModule {
             ),
             addTransaction = AddTransaction(transactionRepository, transactionLineItemRepository),
             getExternalTransaction = GetExternalTransaction(sumUpClient),
+            deleteAllTransactions = DeleteAllTransactions(transactionRepository)
         )
     }
 

@@ -20,4 +20,8 @@ class TransactionRepositoryImpl(
     override suspend fun insertTransaction(transaction: Transaction): Long {
         return transactionDao.insertTransaction(transaction)
     }
+
+    override suspend fun deleteAllTransactions(): Int {
+        return transactionDao.deleteAllTransactions()
+    }
 }

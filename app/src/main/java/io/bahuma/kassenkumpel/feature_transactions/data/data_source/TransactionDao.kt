@@ -13,9 +13,12 @@ interface TransactionDao {
     @Query("SELECT * FROM `transaction`")
     fun getTransactions(): Flow<List<Transaction>>
 
-    @Query("SELECT * FROM `Transaction` ORDER BY timestamp DESC")
+    @Query("SELECT * FROM `transaction` ORDER BY timestamp DESC")
     fun getTransactionsWithTransactionLineItems(): Flow<List<TransactionWithTransactionLineItems>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTransaction(transaction: Transaction): Long
+
+    @Query("DELETE FROM `transaction`")
+    fun deleteAllTransactions(): Int
 }
