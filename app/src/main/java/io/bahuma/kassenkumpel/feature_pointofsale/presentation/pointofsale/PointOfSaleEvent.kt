@@ -17,7 +17,9 @@ sealed class PointOfSaleEvent {
 
     class ChangeLineItemAmount(val productId: Int, val newAmount: Int) : PointOfSaleEvent()
     data object PayCashEvent : PointOfSaleEvent()
-    class PayCardEvent(val launcher: ActivityResultLauncher<SumUpPayment>) : PointOfSaleEvent()
+    class PayCardEvent(val title: String, val launcher: ActivityResultLauncher<SumUpPayment>) :
+        PointOfSaleEvent()
+
     class PayCardResultEvent(val intent: Intent?) : PointOfSaleEvent()
     data object CloseCashPaymentDialogEvent : PointOfSaleEvent()
     data object SnackbarCloseEvent : PointOfSaleEvent()

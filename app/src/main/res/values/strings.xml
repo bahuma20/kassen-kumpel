@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Kassen Kumpel</string>
+    <string name="sumup_affiliate_key">sup_afk_xhxqPBaNBExqDJf97p1EPexF4XIAkqcw</string>
+    <string name="transaction_title">Dein Einkauf bei Kolping Dietfurt</string>
 </resources>

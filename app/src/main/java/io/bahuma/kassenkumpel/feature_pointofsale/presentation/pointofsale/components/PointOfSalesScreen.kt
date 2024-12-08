@@ -24,10 +24,12 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import io.bahuma.kassenkumpel.R
 import io.bahuma.kassenkumpel.core.controller.SnackbarMessageHandler
 import io.bahuma.kassenkumpel.feature_pointofsale.domain.contract.SumUpPaymentForResult
 import io.bahuma.kassenkumpel.feature_pointofsale.presentation.cart.components.Cart
@@ -47,6 +49,8 @@ fun PointOfSalesScreen(
     modifier: Modifier = Modifier,
 ) {
     val uiState = viewModel.uiState.value
+
+    val context = LocalContext.current
 
     val sumupPaymentLauncher = rememberLauncherForActivityResult(SumUpPaymentForResult()) {
         viewModel.onEvent(PayCardResultEvent(it.data))
@@ -132,7 +136,6 @@ fun PointOfSalesScreen(
             )
         }
 
-
         Cart(
             lineItems = viewModel.lineItems,
             totalAmount = viewModel.cartTotal.value,
@@ -152,7 +155,14 @@ fun PointOfSalesScreen(
                     )
                 )
             },
-            onPayCard = { viewModel.onEvent(PointOfSaleEvent.PayCardEvent(sumupPaymentLauncher)) },
+            onPayCard = {
+                viewModel.onEvent(
+                    PointOfSaleEvent.PayCardEvent(
+                        context.getString(R.string.transaction_title),
+                        sumupPaymentLauncher
+                    )
+                )
+            },
             onPayCash = { viewModel.onEvent(PointOfSaleEvent.PayCashEvent) },
             onPayLater = {},
             onClearCart = { viewModel.onEvent(PointOfSaleEvent.ClearCartEvent) },
@@ -189,7 +199,7 @@ fun PointOfSalesScreen(
         while (true) {
             Log.i("PointOfSalesScreen", "checkLoginState")
             viewModel.checkLoginState()
-            delay(5000)
+            delay(2000)
         }
     }
 }
