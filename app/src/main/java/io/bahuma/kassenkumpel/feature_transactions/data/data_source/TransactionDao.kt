@@ -14,6 +14,7 @@ interface TransactionDao {
     fun getTransactions(): Flow<List<Transaction>>
 
     @Query("SELECT * FROM `transaction` ORDER BY timestamp DESC")
+    @androidx.room.Transaction
     fun getTransactionsWithTransactionLineItems(): Flow<List<TransactionWithTransactionLineItems>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

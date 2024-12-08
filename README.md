@@ -47,7 +47,7 @@ Dieses Projekt wird aktiv entwickelt und befindet sich im Moment in einer frühe
     - [ ] Detailansicht Anschreibungs-Konto nach Transaktion
     - [ ] Detailansicht Anschreibungs-Konto Gesamt
 - [x] Speichern aller Transaktionen
-    - [ ] Export der Transaktionen als CSV
+    - [x] Export der Transaktionen als CSV
     - [ ] Statistik über gekaufte Produkte
 - [ ] Quittung für Transaktionen (als PDF per E-Mail oder auf dem Gerät gespeichert)
 - [ ] Konfiguration der aktivierten Features (Barzahlung, Kartenzahlung, Anschreiben)

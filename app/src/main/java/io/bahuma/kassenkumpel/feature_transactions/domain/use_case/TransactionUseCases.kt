@@ -5,5 +5,6 @@ data class TransactionUseCases(
     val getTransactions: GetTransactions,
     val getTransactionsWithTransactionLineItems: GetTransactionsWithTransactionLineItems,
     val getExternalTransaction: GetExternalTransaction,
-    val deleteAllTransactions: DeleteAllTransactions
+    val deleteAllTransactions: DeleteAllTransactions,
+    val exportTransactionsToCSV: ExportTransactionsToCSV
 )

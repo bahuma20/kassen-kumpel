@@ -1,6 +1,7 @@
 package io.bahuma.kassenkumpel.feature_settings.presentation.settings.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.AlertDialog
@@ -9,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,6 +25,8 @@ fun SettingsScreen(
 ) {
 
     val uiState = viewModel.uiState
+
+    val context = LocalContext.current
 
     SnackbarMessageHandler(
         snackbarMessage = uiState.value.snackbarMessage,
@@ -56,6 +60,17 @@ fun SettingsScreen(
         }) {
             Text("Delete all transactions")
         }
+
+        Spacer(Modifier.height(8.dp))
+
+        Row {
+            Button(onClick = {
+                viewModel.onEvent(SettingsEvent.ExportTransactions(context))
+            }) {
+                Text("Transaktionen als CSV exportieren")
+            }
+        }
+
     }
 
     if (uiState.value.confirmDeleteTransactionsDialogOpen) {
