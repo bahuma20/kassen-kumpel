@@ -140,7 +140,7 @@ class PointOfSaleViewModel @Inject constructor(
             }
 
             is PointOfSaleEvent.PayCardEvent -> {
-                cardPaymentUseCases.checkout(cartTotal.value, R.string, event.launcher)
+                cardPaymentUseCases.checkout(cartTotal.value, event.title, event.launcher)
             }
 
             is PointOfSaleEvent.PayCardResultEvent -> {

@@ -14,5 +14,6 @@
 .cxx
 local.properties
 gradle/wrapper/gradle-wrapper.jar
+app/release
 # Kotlin 2.0
 .kotlin/
