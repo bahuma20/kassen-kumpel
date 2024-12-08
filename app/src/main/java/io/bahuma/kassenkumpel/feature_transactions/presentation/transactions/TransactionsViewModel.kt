@@ -27,7 +27,7 @@ class TransactionsViewModel @Inject constructor(
     private fun getTransactions() {
         getTransactionsJob?.cancel()
 
-        getTransactionsJob = transactionUseCases.getTransactions().onEach {
+        getTransactionsJob = transactionUseCases.getTransactionsWithTransactionLineItems().onEach {
             _state.value = state.value.copy(
                 transactions = it
             )

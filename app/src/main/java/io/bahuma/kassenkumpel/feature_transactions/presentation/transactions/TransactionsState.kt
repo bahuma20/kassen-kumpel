@@ -1,7 +1,7 @@
 package io.bahuma.kassenkumpel.feature_transactions.presentation.transactions
 
-import io.bahuma.kassenkumpel.feature_transactions.domain.model.Transaction
+import io.bahuma.kassenkumpel.feature_transactions.domain.model.TransactionWithTransactionLineItems
 
 data class TransactionsState(
-    val transactions: List<Transaction> = emptyList()
+    val transactions: List<TransactionWithTransactionLineItems> = emptyList()
 )

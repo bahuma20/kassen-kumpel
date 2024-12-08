@@ -15,6 +15,7 @@ import io.bahuma.kassenkumpel.feature_transactions.domain.service.SumUpClient
 import io.bahuma.kassenkumpel.feature_transactions.domain.use_case.AddTransaction
 import io.bahuma.kassenkumpel.feature_transactions.domain.use_case.GetExternalTransaction
 import io.bahuma.kassenkumpel.feature_transactions.domain.use_case.GetTransactions
+import io.bahuma.kassenkumpel.feature_transactions.domain.use_case.GetTransactionsWithTransactionLineItems
 import io.bahuma.kassenkumpel.feature_transactions.domain.use_case.TransactionUseCases
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -67,6 +68,9 @@ object TransactionsModule {
 
         return TransactionUseCases(
             getTransactions = GetTransactions(transactionRepository),
+            getTransactionsWithTransactionLineItems = GetTransactionsWithTransactionLineItems(
+                transactionRepository
+            ),
             addTransaction = AddTransaction(transactionRepository, transactionLineItemRepository),
             getExternalTransaction = GetExternalTransaction(sumUpClient),
         )

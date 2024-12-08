@@ -7,8 +7,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import io.bahuma.kassenkumpel.R
 import io.bahuma.kassenkumpel.feature_settings.presentation.settings.SettingsEvent
 import io.bahuma.kassenkumpel.feature_settings.presentation.settings.SettingsViewModel
 
@@ -35,6 +37,10 @@ fun SettingsScreen(
         } else {
             Text("Nicht eingeloggt")
         }
+
+        Spacer(Modifier.height(8.dp))
+
+        Text("Environment: " + stringResource(R.string.environment))
     }
 
 }
