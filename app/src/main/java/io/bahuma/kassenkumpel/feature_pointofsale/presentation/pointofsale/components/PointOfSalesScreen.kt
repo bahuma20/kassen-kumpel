@@ -44,6 +44,8 @@ import io.bahuma.kassenkumpel.feature_transactions.domain.model.PaymentMethod
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 
+private const val TAG = "PointOfSalesScreen"
+
 @ExperimentalCoroutinesApi
 @Composable
 fun PointOfSalesScreen(
@@ -81,9 +83,38 @@ fun PointOfSalesScreen(
                 .fillMaxHeight()
                 .background(Color.White)
         ) {
-            if (!uiState.isLoggedIn) {
-                sumupLoginFunction()
+            if (networkConnection.value === ConnectionState.Unavailable) {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Box(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        ) {
+                            Column {
+                                Text(
+                                    "Keine Internetverbindung!",
+                                    style = MaterialTheme.typography.headlineSmall
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                Text("Um Zahlungen über SumUp zu akzeptieren, muss das Gerät mit dem Internet verbunden sein. Bitte stellen Sie eine WLAN-Verbindung her. Barzahlung ist weiterhin möglich.")
+                            }
+                        }
+                    }
+                }
+            }
 
+            if (networkConnection.value == ConnectionState.Available && !uiState.isLoggedIn) {
                 Box(
                     Modifier
                         .fillMaxWidth()
@@ -118,46 +149,17 @@ fun PointOfSalesScreen(
                 }
             }
 
-            if (networkConnection.value === ConnectionState.Unavailable) {
-                Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    Card(
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        Box(
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp)
-                        ) {
-                            Column {
-                                Text(
-                                    "Keine Internetverbindung!",
-                                    style = MaterialTheme.typography.headlineSmall
-                                )
-                                Spacer(Modifier.height(8.dp))
-                                Text("Um Zahlungen über SumUp zu akzeptieren, muss das Gerät mit dem Internet verbunden sein. Bitte stellen Sie eine WLAN-Verbindung her. Barzahlung ist weiterhin möglich.")
-                            }
-                        }
+            if (viewModel.categories.isNotEmpty()) {
+                CategoryFilter(
+                    categories = viewModel.categories,
+                    selectedCategory = uiState.selectedCategory,
+                    onSelectedCategory = {
+                        viewModel.onEvent(
+                            PointOfSaleEvent.SelectCategory(it)
+                        )
                     }
-                }
+                )
             }
-
-            CategoryFilter(
-                categories = viewModel.categories,
-                selectedCategory = uiState.selectedCategory,
-                onSelectedCategory = {
-                    viewModel.onEvent(
-                        PointOfSaleEvent.SelectCategory(it)
-                    )
-                }
-            )
 
             ProductGrid(
                 viewModel.products,
@@ -234,9 +236,16 @@ fun PointOfSalesScreen(
 
     LaunchedEffect(Unit) {
         while (true) {
-            Log.i("PointOfSalesScreen", "checkLoginState")
+            Log.d(TAG, "checkLoginState")
             viewModel.checkLoginState()
-            delay(2000)
+            delay(1000)
+        }
+    }
+
+    LaunchedEffect(networkConnection.value) {
+        if (networkConnection.value == ConnectionState.Available && !uiState.isLoggedIn) {
+            Log.i(TAG, "Logging in, triggered by networkConnection effect")
+            sumupLoginFunction()
         }
     }
 }
